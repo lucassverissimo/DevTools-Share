@@ -263,3 +263,4 @@ FakesAssemblies/
 *.opt
 
 appsettings.json
+DTSWindowsForm/DTSWindowsForm/appsettings.json
