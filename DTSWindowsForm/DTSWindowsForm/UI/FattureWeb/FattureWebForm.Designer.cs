@@ -32,7 +32,6 @@
             panel1 = new Panel();
             panel5 = new Panel();
             panel3 = new Panel();
-            pcbLoading = new PictureBox();
             gridFaturas = new DataGridView();
             faturaIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             instalacaoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
@@ -42,25 +41,25 @@
             dataEmissaoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             faturasViewDtoBindingSource1 = new BindingSource(components);
             panel4 = new Panel();
-            txtBaseSelecionada = new TextBox();
             txtQtdFaturas = new TextBox();
             lblFaturas = new Label();
-            lblBase = new Label();
             panel2 = new Panel();
+            btnBuscarFaturas = new Button();
+            txtSenha = new TextBox();
+            lblSenha = new Label();
+            txtUsuario = new TextBox();
+            lblUsuario = new Label();
             grbFiltros = new GroupBox();
             btnFiltrar = new Button();
             lblFiltroInstalacao = new Label();
             txtFiltroInstalacao = new TextBox();
             btnDownloadCsv = new Button();
-            lblSelecionarOutraBase = new Label();
-            cmbBasesDisponiveis = new ComboBox();
             faturasViewDtoBindingSource = new BindingSource(components);
             conteudoBindingSource = new BindingSource(components);
             bcwCarregaDados = new System.ComponentModel.BackgroundWorker();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
             panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pcbLoading).BeginInit();
             ((System.ComponentModel.ISupportInitialize)gridFaturas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)faturasViewDtoBindingSource1).BeginInit();
             panel4.SuspendLayout();
@@ -85,30 +84,19 @@
             // 
             panel5.Controls.Add(panel3);
             panel5.Dock = DockStyle.Fill;
-            panel5.Location = new Point(0, 100);
+            panel5.Location = new Point(0, 120);
             panel5.Name = "panel5";
-            panel5.Size = new Size(857, 314);
+            panel5.Size = new Size(857, 294);
             panel5.TabIndex = 3;
             // 
             // panel3
             // 
-            panel3.Controls.Add(pcbLoading);
             panel3.Controls.Add(gridFaturas);
             panel3.Dock = DockStyle.Fill;
             panel3.Location = new Point(0, 0);
             panel3.Name = "panel3";
-            panel3.Size = new Size(857, 314);
+            panel3.Size = new Size(857, 294);
             panel3.TabIndex = 1;
-            // 
-            // pcbLoading
-            // 
-            pcbLoading.Image = Properties.Resources.Spinner_1x_0_7s_200px_200px;
-            pcbLoading.Location = new Point(658, 152);
-            pcbLoading.Name = "pcbLoading";
-            pcbLoading.Size = new Size(66, 59);
-            pcbLoading.SizeMode = PictureBoxSizeMode.CenterImage;
-            pcbLoading.TabIndex = 1;
-            pcbLoading.TabStop = false;
             // 
             // gridFaturas
             // 
@@ -124,7 +112,7 @@
             gridFaturas.ReadOnly = true;
             gridFaturas.RowTemplate.ReadOnly = true;
             gridFaturas.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            gridFaturas.Size = new Size(857, 314);
+            gridFaturas.Size = new Size(857, 294);
             gridFaturas.TabIndex = 0;
             // 
             // faturaIdDataGridViewTextBoxColumn
@@ -175,28 +163,18 @@
             // 
             // panel4
             // 
-            panel4.Controls.Add(txtBaseSelecionada);
             panel4.Controls.Add(txtQtdFaturas);
             panel4.Controls.Add(lblFaturas);
-            panel4.Controls.Add(lblBase);
             panel4.Dock = DockStyle.Bottom;
             panel4.Location = new Point(0, 414);
             panel4.Name = "panel4";
             panel4.Size = new Size(857, 36);
             panel4.TabIndex = 2;
             // 
-            // txtBaseSelecionada
-            // 
-            txtBaseSelecionada.Enabled = false;
-            txtBaseSelecionada.Location = new Point(44, 8);
-            txtBaseSelecionada.Name = "txtBaseSelecionada";
-            txtBaseSelecionada.Size = new Size(100, 23);
-            txtBaseSelecionada.TabIndex = 8;
-            // 
             // txtQtdFaturas
             // 
             txtQtdFaturas.Enabled = false;
-            txtQtdFaturas.Location = new Point(206, 8);
+            txtQtdFaturas.Location = new Point(64, 6);
             txtQtdFaturas.Name = "txtQtdFaturas";
             txtQtdFaturas.Size = new Size(75, 23);
             txtQtdFaturas.TabIndex = 7;
@@ -205,33 +183,73 @@
             // 
             lblFaturas.AutoSize = true;
             lblFaturas.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblFaturas.Location = new Point(150, 11);
+            lblFaturas.Location = new Point(8, 10);
             lblFaturas.Name = "lblFaturas";
             lblFaturas.Size = new Size(50, 15);
             lblFaturas.TabIndex = 2;
             lblFaturas.Text = "Faturas:";
             // 
-            // lblBase
-            // 
-            lblBase.AutoSize = true;
-            lblBase.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblBase.Location = new Point(3, 11);
-            lblBase.Name = "lblBase";
-            lblBase.Size = new Size(36, 15);
-            lblBase.TabIndex = 3;
-            lblBase.Text = "Base:";
-            // 
             // panel2
             // 
+            panel2.Controls.Add(btnBuscarFaturas);
+            panel2.Controls.Add(txtSenha);
+            panel2.Controls.Add(lblSenha);
+            panel2.Controls.Add(txtUsuario);
+            panel2.Controls.Add(lblUsuario);
             panel2.Controls.Add(grbFiltros);
             panel2.Controls.Add(btnDownloadCsv);
-            panel2.Controls.Add(lblSelecionarOutraBase);
-            panel2.Controls.Add(cmbBasesDisponiveis);
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(857, 100);
+            panel2.Size = new Size(857, 120);
             panel2.TabIndex = 0;
+            // 
+            // btnBuscarFaturas
+            // 
+            btnBuscarFaturas.BackColor = Color.GreenYellow;
+            btnBuscarFaturas.FlatStyle = FlatStyle.Popup;
+            btnBuscarFaturas.Location = new Point(288, 21);
+            btnBuscarFaturas.Name = "btnBuscarFaturas";
+            btnBuscarFaturas.Size = new Size(108, 23);
+            btnBuscarFaturas.TabIndex = 12;
+            btnBuscarFaturas.Text = "\U0001f7e2 Buscar Faturas";
+            btnBuscarFaturas.UseVisualStyleBackColor = false;
+            btnBuscarFaturas.Click += btnBuscarFaturas_Click;
+            // 
+            // txtSenha
+            // 
+            txtSenha.Location = new Point(170, 21);
+            txtSenha.Name = "txtSenha";
+            txtSenha.PasswordChar = '●';
+            txtSenha.Size = new Size(100, 23);
+            txtSenha.TabIndex = 11;
+            // 
+            // lblSenha
+            // 
+            lblSenha.AutoSize = true;
+            lblSenha.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblSenha.Location = new Point(170, 6);
+            lblSenha.Name = "lblSenha";
+            lblSenha.Size = new Size(41, 15);
+            lblSenha.TabIndex = 10;
+            lblSenha.Text = "Senha";
+            // 
+            // txtUsuario
+            // 
+            txtUsuario.Location = new Point(16, 21);
+            txtUsuario.Name = "txtUsuario";
+            txtUsuario.Size = new Size(148, 23);
+            txtUsuario.TabIndex = 9;
+            // 
+            // lblUsuario
+            // 
+            lblUsuario.AutoSize = true;
+            lblUsuario.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblUsuario.Location = new Point(16, 6);
+            lblUsuario.Name = "lblUsuario";
+            lblUsuario.Size = new Size(36, 15);
+            lblUsuario.TabIndex = 8;
+            lblUsuario.Text = "Email";
             // 
             // grbFiltros
             // 
@@ -239,9 +257,9 @@
             grbFiltros.Controls.Add(lblFiltroInstalacao);
             grbFiltros.Controls.Add(txtFiltroInstalacao);
             grbFiltros.Dock = DockStyle.Bottom;
-            grbFiltros.Location = new Point(0, 35);
+            grbFiltros.Location = new Point(0, 47);
             grbFiltros.Name = "grbFiltros";
-            grbFiltros.Size = new Size(857, 65);
+            grbFiltros.Size = new Size(857, 73);
             grbFiltros.TabIndex = 7;
             grbFiltros.TabStop = false;
             grbFiltros.Text = "Filtros";
@@ -251,7 +269,7 @@
             btnFiltrar.Dock = DockStyle.Right;
             btnFiltrar.Location = new Point(779, 19);
             btnFiltrar.Name = "btnFiltrar";
-            btnFiltrar.Size = new Size(75, 43);
+            btnFiltrar.Size = new Size(75, 51);
             btnFiltrar.TabIndex = 2;
             btnFiltrar.Text = "Filtrar";
             btnFiltrar.UseVisualStyleBackColor = true;
@@ -279,32 +297,13 @@
             btnDownloadCsv.FlatStyle = FlatStyle.Popup;
             btnDownloadCsv.Font = new Font("Segoe UI", 9F);
             btnDownloadCsv.ForeColor = Color.Black;
-            btnDownloadCsv.Location = new Point(263, 6);
+            btnDownloadCsv.Location = new Point(402, 21);
             btnDownloadCsv.Name = "btnDownloadCsv";
-            btnDownloadCsv.Size = new Size(82, 23);
+            btnDownloadCsv.Size = new Size(86, 23);
             btnDownloadCsv.TabIndex = 6;
             btnDownloadCsv.Text = "🔼 Exportar";
             btnDownloadCsv.UseVisualStyleBackColor = false;
             btnDownloadCsv.Click += btnDownloadCsv_Click;
-            // 
-            // lblSelecionarOutraBase
-            // 
-            lblSelecionarOutraBase.AutoSize = true;
-            lblSelecionarOutraBase.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblSelecionarOutraBase.Location = new Point(5, 9);
-            lblSelecionarOutraBase.Name = "lblSelecionarOutraBase";
-            lblSelecionarOutraBase.Size = new Size(126, 15);
-            lblSelecionarOutraBase.TabIndex = 5;
-            lblSelecionarOutraBase.Text = "Selecionar outra base";
-            // 
-            // cmbBasesDisponiveis
-            // 
-            cmbBasesDisponiveis.FormattingEnabled = true;
-            cmbBasesDisponiveis.Location = new Point(137, 6);
-            cmbBasesDisponiveis.Name = "cmbBasesDisponiveis";
-            cmbBasesDisponiveis.Size = new Size(121, 23);
-            cmbBasesDisponiveis.TabIndex = 4;
-            cmbBasesDisponiveis.SelectedIndexChanged += cmbBasesDisponiveis_SelectedIndexChanged;
             // 
             // faturasViewDtoBindingSource
             // 
@@ -332,7 +331,6 @@
             panel1.ResumeLayout(false);
             panel5.ResumeLayout(false);
             panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pcbLoading).EndInit();
             ((System.ComponentModel.ISupportInitialize)gridFaturas).EndInit();
             ((System.ComponentModel.ISupportInitialize)faturasViewDtoBindingSource1).EndInit();
             panel4.ResumeLayout(false);
@@ -352,15 +350,10 @@
         private Panel panel3;
         private Panel panel2;
         private Label lblFaturas;
-        private Label lblBase;
-        private Label lblSelecionarOutraBase;
-        private ComboBox cmbBasesDisponiveis;
         private DataGridView gridFaturas;
         private BindingSource conteudoBindingSource;
-        private PictureBox pcbLoading;
         private System.ComponentModel.BackgroundWorker bcwCarregaDados;
         private Button btnDownloadCsv;
-        private TextBox txtBaseSelecionada;
         private TextBox txtQtdFaturas;
         private DataGridViewTextBoxColumn faturaIdDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn instalacaoDataGridViewTextBoxColumn;
@@ -376,5 +369,10 @@
         private Label lblFiltroInstalacao;
         private TextBox txtFiltroInstalacao;
         private BindingSource faturasViewDtoBindingSource1;
+        private Label lblUsuario;
+        private TextBox txtSenha;
+        private Label lblSenha;
+        private TextBox txtUsuario;
+        private Button btnBuscarFaturas;
     }
 }

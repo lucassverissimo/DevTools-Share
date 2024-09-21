@@ -11,7 +11,7 @@ namespace DTSWindowsForm.UI.FattureWeb
     {
         List<Dado> dados = new List<Dado>();
         string token = string.Empty;
-        Settings settings;
+
         private string ultimaColunaOrdenada = string.Empty;
         private SortOrder direcaoOrdenacao = SortOrder.None;
         private FiltrosFaturasDto filtros = new FiltrosFaturasDto();
@@ -19,18 +19,34 @@ namespace DTSWindowsForm.UI.FattureWeb
         private LoadingControl loadingControl;
         public FattureWebForm()
         {
-            settings = Program.AppSettings;
             InitializeComponent();
             loadingControl = new LoadingControl();
-            pcbLoading.Dock = DockStyle.Fill;
-            gridFaturas.AllowUserToOrderColumns = true;
+
             foreach (DataGridViewColumn column in gridFaturas.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.Automatic;
             }
+            gridFaturas.AllowUserToOrderColumns = true;
             gridFaturas.ColumnHeaderMouseClick += dataGridView_ColumnHeaderMouseClick;
-            pcbLoading.Visible = false;
-            IniciaBackground();
+
+            if (Program.AppSettings != null)
+            {
+                txtUsuario.Text = Program.AppSettings.TipoConta switch
+                {
+                    TipoContaEnum.Prod => Program.AppSettings.UsuarioProducao,
+                    TipoContaEnum.Dev => Program.AppSettings.UsuarioDev,
+                    TipoContaEnum.Qa => Program.AppSettings.UsuarioQa,
+                    _ => ""
+                };
+
+                txtSenha.Text = Program.AppSettings.TipoConta switch
+                {
+                    TipoContaEnum.Prod => Program.AppSettings.SenhaProducao,
+                    TipoContaEnum.Dev => Program.AppSettings.SenhaDev,
+                    TipoContaEnum.Qa => Program.AppSettings.SenhaQa,
+                    _ => ""
+                };
+            }
         }
 
         private void StartLoading()
@@ -83,8 +99,6 @@ namespace DTSWindowsForm.UI.FattureWeb
         private void IniciaBackground()
         {
             StartLoading();
-            cmbBasesDisponiveis.Enabled = false;
-
             bcwCarregaDados.RunWorkerAsync();
         }
 
@@ -102,22 +116,7 @@ namespace DTSWindowsForm.UI.FattureWeb
         private void AjustarInterface()
         {
             PreencherGridFaturas();
-            txtBaseSelecionada.Text = settings.TipoConta.GetEnumDescription();
             txtQtdFaturas.Text = dados.Count.ToString();
-            if (dados.Count > 0)
-            {
-                var opcoes = new Dictionary<TipoContaEnum, string>
-                {
-                    { TipoContaEnum.Prod, TipoContaEnum.Prod.GetEnumDescription() },
-                    { TipoContaEnum.Dev, TipoContaEnum.Dev.GetEnumDescription() },
-                    { TipoContaEnum.Qa, TipoContaEnum.Qa.GetEnumDescription() }
-                }.Where(opt => settings.TipoConta != opt.Key).Select(opt => opt.Value);
-                foreach (var opco in opcoes)
-                {
-                    cmbBasesDisponiveis.Items.Add(opco);
-                }
-                cmbBasesDisponiveis.Enabled = true;
-            }
         }
 
         private void PreencherGridFaturas()
@@ -202,18 +201,19 @@ namespace DTSWindowsForm.UI.FattureWeb
             var requestToken = new HttpRequestMessage(HttpMethod.Post, "https://api.fattureweb.com.br/auth/login");
             var jsonRequestToken = new JObject
             {
-                { "email", settings.getUsuario() },
-                { "senha", settings.getSenha() }
+                { "email", txtUsuario.Text },
+                { "senha", txtSenha.Text }
             };
             var contentToken = new StringContent(jsonRequestToken.ToString(), null, "application/json");
             requestToken.Content = contentToken;
             var response = clientToken.Send(requestToken);
-            response.EnsureSuccessStatusCode();
+            //response.EnsureSuccessStatusCode();
             var responseBody = response.Content.ReadAsStringAsync().Result;
             var jsonResponse = JObject.Parse(responseBody);
 
-            if (!jsonResponse.HasValues)
+            if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
+                MessageBox.Show("Não foi possível fazer autenticação com esse usuário/senha.", "Falha login", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return "";
             }
             else
@@ -287,13 +287,13 @@ namespace DTSWindowsForm.UI.FattureWeb
 
         private void cmbBasesDisponiveis_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbBasesDisponiveis.SelectedItem != null)
-            {
-                string itemSelecionado = cmbBasesDisponiveis.SelectedItem.ToString();
-                settings.TipoConta = EnumExtensions.GetEnumByDescription<TipoContaEnum>(itemSelecionado);
-                cmbBasesDisponiveis.Items.Clear();
-                IniciaBackground();
-            }
+            //if (cmbBasesDisponiveis.SelectedItem != null)
+            //{
+            //    string itemSelecionado = cmbBasesDisponiveis.SelectedItem.ToString();
+            //    settings.TipoConta = EnumExtensions.GetEnumByDescription<TipoContaEnum>(itemSelecionado);
+            //    cmbBasesDisponiveis.Items.Clear();
+            //    IniciaBackground();
+            //}
         }
 
         private void btnDownloadCsv_Click(object sender, EventArgs e)
@@ -305,6 +305,11 @@ namespace DTSWindowsForm.UI.FattureWeb
         {
             filtros.Instalacao = txtFiltroInstalacao.Text;
             PreencherGridFaturas();
+        }
+
+        private void btnBuscarFaturas_Click(object sender, EventArgs e)
+        {
+            IniciaBackground();
         }
     }
 }
