@@ -5,7 +5,7 @@ namespace DTSWindowsForm;
 internal static class Program
 {
     public static IConfiguration Configuration { get; private set; }
-
+    public static string OutputDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output");
     public static Settings AppSettings { get; private set; }
     [STAThread]
     static void Main()

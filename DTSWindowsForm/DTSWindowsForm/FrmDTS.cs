@@ -20,7 +20,7 @@ namespace DTSWindowsForm
             form = new T();
             form.Show();
         }
-        private static void MethodNotImplemented()
+        public static void MethodNotImplemented()
         {
             MessageBox.Show("👷🚧 Em construção!!!", "Método não implementado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }

@@ -48,7 +48,7 @@ namespace DTSWindowsForm
             pnlForm.Dock = DockStyle.Fill;
             pnlForm.Location = new Point(0, 0);
             pnlForm.Name = "pnlForm";
-            pnlForm.Size = new Size(484, 70);
+            pnlForm.Size = new Size(442, 70);
             pnlForm.TabIndex = 0;
             // 
             // btnDashboard
@@ -89,8 +89,10 @@ namespace DTSWindowsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(484, 70);
+            ClientSize = new Size(442, 70);
             Controls.Add(pnlForm);
+            MaximumSize = new Size(458, 109);
+            MinimumSize = new Size(458, 109);
             Name = "FrmDTS";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "DevTools - Share";

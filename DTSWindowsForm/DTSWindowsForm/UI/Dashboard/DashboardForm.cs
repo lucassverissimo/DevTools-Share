@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using DTSWindowsForm.Extensions;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace DTSWindowsForm.UI.Dashboard
@@ -10,17 +11,12 @@ namespace DTSWindowsForm.UI.Dashboard
         {
             InitializeComponent();
             this.KeyPreview = true;
-
-            // Associa o evento KeyDown ao método Form_KeyDown
-            this.KeyDown += new KeyEventHandler(Form_KeyDown);
         }
 
         private void Form_KeyDown(object sender, KeyEventArgs e)
         {
-            // Verifica se a tecla pressionada foi F5
             if (e.KeyCode == Keys.F5)
             {
-                // Chama o método de clique do botão "Executar"
                 btnExecutar.PerformClick();
             }
         }
@@ -82,6 +78,11 @@ namespace DTSWindowsForm.UI.Dashboard
             }
             query = rtxConsulta.Text;
             LoadData();
+        }
+
+        private void btnExportar_Click(object sender, EventArgs e)
+        {
+            ConsultaGrid.ExportToXls("consulta", Program.OutputDir);
         }
     }
 }

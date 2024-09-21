@@ -33,6 +33,7 @@
             panel3 = new Panel();
             ConsultaGrid = new DataGridView();
             panel2 = new Panel();
+            btnExportar = new Button();
             btnExecutar = new Button();
             lblSegundos = new Label();
             txtmReload = new MaskedTextBox();
@@ -76,6 +77,7 @@
             // 
             // panel2
             // 
+            panel2.Controls.Add(btnExportar);
             panel2.Controls.Add(btnExecutar);
             panel2.Controls.Add(lblSegundos);
             panel2.Controls.Add(txtmReload);
@@ -88,14 +90,29 @@
             panel2.Size = new Size(788, 181);
             panel2.TabIndex = 0;
             // 
+            // btnExportar
+            // 
+            btnExportar.BackColor = Color.DarkOrange;
+            btnExportar.Cursor = Cursors.Hand;
+            btnExportar.FlatStyle = FlatStyle.Popup;
+            btnExportar.Location = new Point(248, 146);
+            btnExportar.Name = "btnExportar";
+            btnExportar.Size = new Size(75, 23);
+            btnExportar.TabIndex = 7;
+            btnExportar.Text = "🔼 Exportar";
+            btnExportar.UseVisualStyleBackColor = false;
+            btnExportar.Click += btnExportar_Click;
+            // 
             // btnExecutar
             // 
+            btnExecutar.BackColor = Color.Chartreuse;
+            btnExecutar.FlatStyle = FlatStyle.Flat;
             btnExecutar.Location = new Point(167, 146);
             btnExecutar.Name = "btnExecutar";
             btnExecutar.Size = new Size(75, 23);
             btnExecutar.TabIndex = 6;
             btnExecutar.Text = "▶️ Executar";
-            btnExecutar.UseVisualStyleBackColor = true;
+            btnExecutar.UseVisualStyleBackColor = false;
             btnExecutar.Click += btnExecutar_Click;
             // 
             // lblSegundos
@@ -158,6 +175,7 @@
             Name = "DashboardForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "DevTools - Share (Dashboard)";
+            KeyDown += Form_KeyDown;
             panel1.ResumeLayout(false);
             panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)ConsultaGrid).EndInit();
@@ -179,5 +197,6 @@
         private Label lblReload;
         private DataGridView ConsultaGrid;
         private Button btnExecutar;
+        private Button btnExportar;
     }
 }

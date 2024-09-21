@@ -1,5 +1,7 @@
 ﻿using DTSWindowsForm.Config;
+using DTSWindowsForm.Extensions;
 using DTSWindowsForm.UI.FattureWeb.dtos;
+using DTSWindowsForm.UI.UserControls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -13,10 +15,13 @@ namespace DTSWindowsForm.UI.FattureWeb
         private string ultimaColunaOrdenada = string.Empty;
         private SortOrder direcaoOrdenacao = SortOrder.None;
         private FiltrosFaturasDto filtros = new FiltrosFaturasDto();
+
+        private LoadingControl loadingControl;
         public FattureWebForm()
         {
             settings = Program.AppSettings;
             InitializeComponent();
+            loadingControl = new LoadingControl();
             pcbLoading.Dock = DockStyle.Fill;
             gridFaturas.AllowUserToOrderColumns = true;
             foreach (DataGridViewColumn column in gridFaturas.Columns)
@@ -24,7 +29,20 @@ namespace DTSWindowsForm.UI.FattureWeb
                 column.SortMode = DataGridViewColumnSortMode.Automatic;
             }
             gridFaturas.ColumnHeaderMouseClick += dataGridView_ColumnHeaderMouseClick;
+            pcbLoading.Visible = false;
             IniciaBackground();
+        }
+
+        private void StartLoading()
+        {
+            //pcbLoading.Visible = true;
+            loadingControl.ShowLoading(this, "aguarde...");
+        }
+
+        private void StopLoading()
+        {
+            //pcbLoading.Visible = false;
+            loadingControl.HideLoading(this);
         }
 
         private void dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -66,6 +84,7 @@ namespace DTSWindowsForm.UI.FattureWeb
         {
             StartLoading();
             cmbBasesDisponiveis.Enabled = false;
+
             bcwCarregaDados.RunWorkerAsync();
         }
 
@@ -165,16 +184,6 @@ namespace DTSWindowsForm.UI.FattureWeb
             }
 
             return dadosFiltrados;
-        }
-
-        private void StartLoading()
-        {
-            pcbLoading.Visible = true;
-        }
-
-        private void StopLoading()
-        {
-            pcbLoading.Visible = false;
         }
 
         public void CarregarDados()
@@ -289,38 +298,7 @@ namespace DTSWindowsForm.UI.FattureWeb
 
         private void btnDownloadCsv_Click(object sender, EventArgs e)
         {
-            string outputDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "output");
-
-            if (!Directory.Exists(outputDir))
-            {
-                Directory.CreateDirectory(outputDir);
-            }
-
-            string timestamp = DateTime.Now.ToString("ddMMyyyyHHmmss");
-
-            string fileName = $"faturas{settings.TipoConta.GetEnumDescription()}_{timestamp}.csv";
-            string filePath = Path.Combine(outputDir, fileName);
-
-            using (StreamWriter writer = new StreamWriter(filePath))
-            {
-                writer.WriteLine($"\"dado.Conteudo.FaturaId\",\"dado.Conteudo.UnidadeConsumidora.Instalacao\",\"dado.Conteudo.Fatura.MesReferencia\",\"dado.Conteudo.Distribuidora\",\"idInstalacao\",\"consumo_total\",\"data_emissao\"");
-                foreach (var dado in dados)
-                {
-                    DateTime dataMesRef = DateTime.Parse(dado.Conteudo.Fatura.MesReferencia);
-                    var consumoTotal = dado.Conteudo.Fatura.HistoricoFaturamento != null ? dado.Conteudo.Fatura.HistoricoFaturamento.FirstOrDefault().EnergiaAtiva : 0;
-                    writer.WriteLine($"\"{dado.Conteudo.FaturaId}\",\"{dado.Conteudo.UnidadeConsumidora.Instalacao}\",\"{dataMesRef.ToString("MMyyyy")}\",\"{dado.Conteudo.Distribuidora}\",\"{dado.InstalacaoId}\",\"{consumoTotal}\",\"{dado.Conteudo.Fatura.DataEmissao}\"");
-                }
-            }
-
-            MessageBox.Show("Exportação concluída com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            // Pergunta ao usuário se deseja abrir o diretório
-            DialogResult result = MessageBox.Show("Deseja abrir o diretório onde o arquivo foi salvo?", "Abrir Diretório", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
-            {
-                System.Diagnostics.Process.Start("explorer.exe", Path.GetDirectoryName(filePath));
-            }
+            gridFaturas.ExportToXls("faturas", Program.OutputDir);
         }
 
         private void btnFiltrar_Click(object sender, EventArgs e)

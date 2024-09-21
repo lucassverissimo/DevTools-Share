@@ -103,7 +103,7 @@
             // pcbLoading
             // 
             pcbLoading.Image = Properties.Resources.Spinner_1x_0_7s_200px_200px;
-            pcbLoading.Location = new Point(779, 296);
+            pcbLoading.Location = new Point(658, 152);
             pcbLoading.Name = "pcbLoading";
             pcbLoading.Size = new Size(66, 59);
             pcbLoading.SizeMode = PictureBoxSizeMode.CenterImage;
@@ -275,15 +275,15 @@
             // 
             // btnDownloadCsv
             // 
-            btnDownloadCsv.BackColor = Color.LightSeaGreen;
+            btnDownloadCsv.BackColor = Color.DarkOrange;
             btnDownloadCsv.FlatStyle = FlatStyle.Popup;
-            btnDownloadCsv.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnDownloadCsv.ForeColor = SystemColors.ButtonFace;
+            btnDownloadCsv.Font = new Font("Segoe UI", 9F);
+            btnDownloadCsv.ForeColor = Color.Black;
             btnDownloadCsv.Location = new Point(263, 6);
             btnDownloadCsv.Name = "btnDownloadCsv";
             btnDownloadCsv.Size = new Size(82, 23);
             btnDownloadCsv.TabIndex = 6;
-            btnDownloadCsv.Text = "Exportar";
+            btnDownloadCsv.Text = "🔼 Exportar";
             btnDownloadCsv.UseVisualStyleBackColor = false;
             btnDownloadCsv.Click += btnDownloadCsv_Click;
             // 
