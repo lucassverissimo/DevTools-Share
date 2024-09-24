@@ -15,8 +15,8 @@ namespace DTSWindowsForm.UI.FattureWeb
         private string ultimaColunaOrdenada = string.Empty;
         private SortOrder direcaoOrdenacao = SortOrder.None;
         private FiltrosFaturasDto filtros = new FiltrosFaturasDto();
-
         private LoadingControl loadingControl;
+        private List<Dado> dadosFiltrados = new List<Dado>();
         public FattureWebForm()
         {
             InitializeComponent();
@@ -91,6 +91,7 @@ namespace DTSWindowsForm.UI.FattureWeb
             // Atualize a fonte de dados do DataGridView
             gridFaturas.DataSource = null;
             gridFaturas.DataSource = dadosGrid;
+            PreencherComboBoxInstalacao();
         }
         private object GetPropertyValue(object obj, string propertyName)
         {
@@ -116,13 +117,12 @@ namespace DTSWindowsForm.UI.FattureWeb
         private void AjustarInterface()
         {
             PreencherGridFaturas();
-            txtQtdFaturas.Text = dados.Count.ToString();
         }
 
         private void PreencherGridFaturas()
         {
             List<FaturasViewDto> faturas = new List<FaturasViewDto>();
-            var dadosFiltrados = FiltrarDados();
+            dadosFiltrados = FiltrarDados();
             foreach (var dado in dadosFiltrados)
             {
                 DateTime dataMesRef = DateTime.Parse(dado.Conteudo.Fatura.MesReferencia);
@@ -140,8 +140,28 @@ namespace DTSWindowsForm.UI.FattureWeb
             }
 
             gridFaturas.DataSource = faturas;
+            PreencherComboBoxInstalacao();
 
+        }
+        private void PreencherComboBoxInstalacao()
+        {
+            // Primeiro, limpe qualquer valor existente no ComboBox
+            cmbInstalacao.Items.Clear();
 
+            // Crie uma lista de valores únicos
+            HashSet<string> instalacoesUnicas = new HashSet<string>() { "" };
+
+            // Percorra as linhas do DataGridView para pegar os valores da coluna "Instalação"
+            foreach (var dado in dados)
+            {
+                if (!string.IsNullOrEmpty(dado.Conteudo.UnidadeConsumidora.Instalacao))
+                {
+                    instalacoesUnicas.Add(dado.Conteudo.UnidadeConsumidora.Instalacao);
+                }
+            }
+            // Adicione os valores únicos no ComboBox
+            cmbInstalacao.Items.AddRange(instalacoesUnicas.ToArray());
+            cmbInstalacao.SelectedItem = filtros.Instalacoes.Count > 0 ? filtros.Instalacoes.First() : "";
         }
 
         private List<Dado> FiltrarDados()
@@ -152,9 +172,9 @@ namespace DTSWindowsForm.UI.FattureWeb
                 dadosFiltrados = dadosFiltrados.Where(x => x.Conteudo.FaturaId.ToString() == filtros.FaturaId).ToList();
             }
 
-            if (!string.IsNullOrEmpty(filtros.Instalacao))
+            if (filtros.Instalacoes != null && filtros.Instalacoes.Count > 0)
             {
-                dadosFiltrados = dadosFiltrados.Where(x => x.Conteudo.UnidadeConsumidora.Instalacao.ToString() == filtros.Instalacao).ToList();
+                dadosFiltrados = dadosFiltrados.Where(x => filtros.Instalacoes.Any(o => o == x.Conteudo.UnidadeConsumidora.Instalacao.ToString())).ToList();
             }
 
             if (filtros.MesReferencia.HasValue)
@@ -303,13 +323,40 @@ namespace DTSWindowsForm.UI.FattureWeb
 
         private void btnFiltrar_Click(object sender, EventArgs e)
         {
-            filtros.Instalacao = txtFiltroInstalacao.Text;
+            filtros.Instalacoes.Clear();
+            if (cmbInstalacao.SelectedItem != null && !string.IsNullOrEmpty(cmbInstalacao.SelectedItem.ToString()))
+            {
+                filtros.Instalacoes.Add(cmbInstalacao.SelectedItem.ToString());
+            }
+
             PreencherGridFaturas();
         }
 
         private void btnBuscarFaturas_Click(object sender, EventArgs e)
         {
             IniciaBackground();
+        }
+
+        private void btnLimparFiltros_Click(object sender, EventArgs e)
+        {
+            LimparFiltros();
+        }
+
+        private void LimparFiltros()
+        {
+            filtros = new FiltrosFaturasDto();
+            PreencherGridFaturas();
+        }
+
+        private void gridFaturas_DataSourceChanged(object sender, EventArgs e)
+        {
+            AtualizarTotais();
+        }
+
+        private void AtualizarTotais()
+        {
+            txtQtdFaturas.Text = dados.Count.ToString();
+            txtQtdFaturasFiltradas.Text = dadosFiltrados.Count().ToString();
         }
     }
 }

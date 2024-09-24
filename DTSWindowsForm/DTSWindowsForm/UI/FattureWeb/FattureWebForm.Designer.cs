@@ -41,22 +41,32 @@
             dataEmissaoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             faturasViewDtoBindingSource1 = new BindingSource(components);
             panel4 = new Panel();
+            txtQtdFaturasFiltradas = new TextBox();
+            label1 = new Label();
             txtQtdFaturas = new TextBox();
             lblFaturas = new Label();
             panel2 = new Panel();
+            panel6 = new Panel();
+            grbFiltros = new GroupBox();
+            btnLimparFiltros = new Button();
+            cmbInstalacao = new ComboBox();
+            btnFiltrar = new Button();
+            lblFiltroInstalacao = new Label();
             btnBuscarFaturas = new Button();
             txtSenha = new TextBox();
             lblSenha = new Label();
             txtUsuario = new TextBox();
             lblUsuario = new Label();
-            grbFiltros = new GroupBox();
-            btnFiltrar = new Button();
-            lblFiltroInstalacao = new Label();
-            txtFiltroInstalacao = new TextBox();
             btnDownloadCsv = new Button();
             faturasViewDtoBindingSource = new BindingSource(components);
             conteudoBindingSource = new BindingSource(components);
             bcwCarregaDados = new System.ComponentModel.BackgroundWorker();
+            panel7 = new Panel();
+            tabControl1 = new TabControl();
+            tpgFaturas = new TabPage();
+            panel8 = new Panel();
+            tpgCobrancas = new TabPage();
+            lblEmConstrucao = new Label();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
             panel3.SuspendLayout();
@@ -64,9 +74,15 @@
             ((System.ComponentModel.ISupportInitialize)faturasViewDtoBindingSource1).BeginInit();
             panel4.SuspendLayout();
             panel2.SuspendLayout();
+            panel6.SuspendLayout();
             grbFiltros.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)faturasViewDtoBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)conteudoBindingSource).BeginInit();
+            panel7.SuspendLayout();
+            tabControl1.SuspendLayout();
+            tpgFaturas.SuspendLayout();
+            panel8.SuspendLayout();
+            tpgCobrancas.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -77,16 +93,16 @@
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(857, 450);
+            panel1.Size = new Size(843, 504);
             panel1.TabIndex = 0;
             // 
             // panel5
             // 
             panel5.Controls.Add(panel3);
             panel5.Dock = DockStyle.Fill;
-            panel5.Location = new Point(0, 120);
+            panel5.Location = new Point(0, 158);
             panel5.Name = "panel5";
-            panel5.Size = new Size(857, 294);
+            panel5.Size = new Size(843, 310);
             panel5.TabIndex = 3;
             // 
             // panel3
@@ -95,7 +111,7 @@
             panel3.Dock = DockStyle.Fill;
             panel3.Location = new Point(0, 0);
             panel3.Name = "panel3";
-            panel3.Size = new Size(857, 294);
+            panel3.Size = new Size(843, 310);
             panel3.TabIndex = 1;
             // 
             // gridFaturas
@@ -112,8 +128,9 @@
             gridFaturas.ReadOnly = true;
             gridFaturas.RowTemplate.ReadOnly = true;
             gridFaturas.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            gridFaturas.Size = new Size(857, 294);
+            gridFaturas.Size = new Size(843, 310);
             gridFaturas.TabIndex = 0;
+            gridFaturas.DataSourceChanged += gridFaturas_DataSourceChanged;
             // 
             // faturaIdDataGridViewTextBoxColumn
             // 
@@ -163,18 +180,38 @@
             // 
             // panel4
             // 
+            panel4.Controls.Add(txtQtdFaturasFiltradas);
+            panel4.Controls.Add(label1);
             panel4.Controls.Add(txtQtdFaturas);
             panel4.Controls.Add(lblFaturas);
             panel4.Dock = DockStyle.Bottom;
-            panel4.Location = new Point(0, 414);
+            panel4.Location = new Point(0, 468);
             panel4.Name = "panel4";
-            panel4.Size = new Size(857, 36);
+            panel4.Size = new Size(843, 36);
             panel4.TabIndex = 2;
+            // 
+            // txtQtdFaturasFiltradas
+            // 
+            txtQtdFaturasFiltradas.Enabled = false;
+            txtQtdFaturasFiltradas.Location = new Point(195, 7);
+            txtQtdFaturasFiltradas.Name = "txtQtdFaturasFiltradas";
+            txtQtdFaturasFiltradas.Size = new Size(75, 23);
+            txtQtdFaturasFiltradas.TabIndex = 9;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            label1.Location = new Point(132, 10);
+            label1.Name = "label1";
+            label1.Size = new Size(57, 15);
+            label1.TabIndex = 8;
+            label1.Text = "Filtrados:";
             // 
             // txtQtdFaturas
             // 
             txtQtdFaturas.Enabled = false;
-            txtQtdFaturas.Location = new Point(64, 6);
+            txtQtdFaturas.Location = new Point(51, 7);
             txtQtdFaturas.Name = "txtQtdFaturas";
             txtQtdFaturas.Size = new Size(75, 23);
             txtQtdFaturas.TabIndex = 7;
@@ -185,24 +222,93 @@
             lblFaturas.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblFaturas.Location = new Point(8, 10);
             lblFaturas.Name = "lblFaturas";
-            lblFaturas.Size = new Size(50, 15);
+            lblFaturas.Size = new Size(37, 15);
             lblFaturas.TabIndex = 2;
-            lblFaturas.Text = "Faturas:";
+            lblFaturas.Text = "Total:";
             // 
             // panel2
             // 
+            panel2.Controls.Add(panel6);
             panel2.Controls.Add(btnBuscarFaturas);
             panel2.Controls.Add(txtSenha);
             panel2.Controls.Add(lblSenha);
             panel2.Controls.Add(txtUsuario);
             panel2.Controls.Add(lblUsuario);
-            panel2.Controls.Add(grbFiltros);
-            panel2.Controls.Add(btnDownloadCsv);
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(857, 120);
+            panel2.Size = new Size(843, 158);
             panel2.TabIndex = 0;
+            // 
+            // panel6
+            // 
+            panel6.AutoScroll = true;
+            panel6.Controls.Add(grbFiltros);
+            panel6.Dock = DockStyle.Bottom;
+            panel6.Location = new Point(0, 58);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(843, 100);
+            panel6.TabIndex = 13;
+            // 
+            // grbFiltros
+            // 
+            grbFiltros.Controls.Add(btnLimparFiltros);
+            grbFiltros.Controls.Add(cmbInstalacao);
+            grbFiltros.Controls.Add(btnFiltrar);
+            grbFiltros.Controls.Add(lblFiltroInstalacao);
+            grbFiltros.Controls.Add(btnDownloadCsv);
+            grbFiltros.Dock = DockStyle.Fill;
+            grbFiltros.Location = new Point(0, 0);
+            grbFiltros.Name = "grbFiltros";
+            grbFiltros.Size = new Size(843, 100);
+            grbFiltros.TabIndex = 7;
+            grbFiltros.TabStop = false;
+            grbFiltros.Text = "Filtros";
+            // 
+            // btnLimparFiltros
+            // 
+            btnLimparFiltros.BackColor = Color.PaleGoldenrod;
+            btnLimparFiltros.FlatStyle = FlatStyle.Popup;
+            btnLimparFiltros.Location = new Point(116, 67);
+            btnLimparFiltros.Name = "btnLimparFiltros";
+            btnLimparFiltros.Size = new Size(95, 25);
+            btnLimparFiltros.TabIndex = 4;
+            btnLimparFiltros.Text = "Limpar Filtros";
+            btnLimparFiltros.UseVisualStyleBackColor = false;
+            btnLimparFiltros.Click += btnLimparFiltros_Click;
+            // 
+            // cmbInstalacao
+            // 
+            cmbInstalacao.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            cmbInstalacao.AutoCompleteSource = AutoCompleteSource.ListItems;
+            cmbInstalacao.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbInstalacao.FlatStyle = FlatStyle.Popup;
+            cmbInstalacao.FormattingEnabled = true;
+            cmbInstalacao.Location = new Point(14, 38);
+            cmbInstalacao.Name = "cmbInstalacao";
+            cmbInstalacao.Size = new Size(121, 23);
+            cmbInstalacao.TabIndex = 3;
+            // 
+            // btnFiltrar
+            // 
+            btnFiltrar.BackColor = Color.GreenYellow;
+            btnFiltrar.FlatStyle = FlatStyle.Popup;
+            btnFiltrar.Location = new Point(15, 67);
+            btnFiltrar.Name = "btnFiltrar";
+            btnFiltrar.Size = new Size(95, 25);
+            btnFiltrar.TabIndex = 2;
+            btnFiltrar.Text = "Aplicar Filtros";
+            btnFiltrar.UseVisualStyleBackColor = false;
+            btnFiltrar.Click += btnFiltrar_Click;
+            // 
+            // lblFiltroInstalacao
+            // 
+            lblFiltroInstalacao.AutoSize = true;
+            lblFiltroInstalacao.Location = new Point(14, 20);
+            lblFiltroInstalacao.Name = "lblFiltroInstalacao";
+            lblFiltroInstalacao.Size = new Size(60, 15);
+            lblFiltroInstalacao.TabIndex = 1;
+            lblFiltroInstalacao.Text = "Instalação";
             // 
             // btnBuscarFaturas
             // 
@@ -251,55 +357,15 @@
             lblUsuario.TabIndex = 8;
             lblUsuario.Text = "Email";
             // 
-            // grbFiltros
-            // 
-            grbFiltros.Controls.Add(btnFiltrar);
-            grbFiltros.Controls.Add(lblFiltroInstalacao);
-            grbFiltros.Controls.Add(txtFiltroInstalacao);
-            grbFiltros.Dock = DockStyle.Bottom;
-            grbFiltros.Location = new Point(0, 47);
-            grbFiltros.Name = "grbFiltros";
-            grbFiltros.Size = new Size(857, 73);
-            grbFiltros.TabIndex = 7;
-            grbFiltros.TabStop = false;
-            grbFiltros.Text = "Filtros";
-            // 
-            // btnFiltrar
-            // 
-            btnFiltrar.Dock = DockStyle.Right;
-            btnFiltrar.Location = new Point(779, 19);
-            btnFiltrar.Name = "btnFiltrar";
-            btnFiltrar.Size = new Size(75, 51);
-            btnFiltrar.TabIndex = 2;
-            btnFiltrar.Text = "Filtrar";
-            btnFiltrar.UseVisualStyleBackColor = true;
-            btnFiltrar.Click += btnFiltrar_Click;
-            // 
-            // lblFiltroInstalacao
-            // 
-            lblFiltroInstalacao.AutoSize = true;
-            lblFiltroInstalacao.Location = new Point(21, 17);
-            lblFiltroInstalacao.Name = "lblFiltroInstalacao";
-            lblFiltroInstalacao.Size = new Size(60, 15);
-            lblFiltroInstalacao.TabIndex = 1;
-            lblFiltroInstalacao.Text = "Instalação";
-            // 
-            // txtFiltroInstalacao
-            // 
-            txtFiltroInstalacao.Location = new Point(21, 30);
-            txtFiltroInstalacao.Name = "txtFiltroInstalacao";
-            txtFiltroInstalacao.Size = new Size(100, 23);
-            txtFiltroInstalacao.TabIndex = 0;
-            // 
             // btnDownloadCsv
             // 
             btnDownloadCsv.BackColor = Color.DarkOrange;
             btnDownloadCsv.FlatStyle = FlatStyle.Popup;
             btnDownloadCsv.Font = new Font("Segoe UI", 9F);
-            btnDownloadCsv.ForeColor = Color.Black;
-            btnDownloadCsv.Location = new Point(402, 21);
+            btnDownloadCsv.ForeColor = SystemColors.ControlText;
+            btnDownloadCsv.Location = new Point(217, 67);
             btnDownloadCsv.Name = "btnDownloadCsv";
-            btnDownloadCsv.Size = new Size(86, 23);
+            btnDownloadCsv.Size = new Size(95, 25);
             btnDownloadCsv.TabIndex = 6;
             btnDownloadCsv.Text = "🔼 Exportar";
             btnDownloadCsv.UseVisualStyleBackColor = false;
@@ -318,12 +384,75 @@
             bcwCarregaDados.DoWork += bcwCarregaDados_DoWork;
             bcwCarregaDados.RunWorkerCompleted += bcwCarregaDados_RunWorkerCompleted;
             // 
+            // panel7
+            // 
+            panel7.Controls.Add(tabControl1);
+            panel7.Dock = DockStyle.Fill;
+            panel7.Location = new Point(0, 0);
+            panel7.Name = "panel7";
+            panel7.Size = new Size(857, 538);
+            panel7.TabIndex = 1;
+            // 
+            // tabControl1
+            // 
+            tabControl1.Controls.Add(tpgFaturas);
+            tabControl1.Controls.Add(tpgCobrancas);
+            tabControl1.Dock = DockStyle.Fill;
+            tabControl1.Location = new Point(0, 0);
+            tabControl1.Name = "tabControl1";
+            tabControl1.SelectedIndex = 0;
+            tabControl1.Size = new Size(857, 538);
+            tabControl1.TabIndex = 1;
+            // 
+            // tpgFaturas
+            // 
+            tpgFaturas.Controls.Add(panel8);
+            tpgFaturas.Location = new Point(4, 24);
+            tpgFaturas.Name = "tpgFaturas";
+            tpgFaturas.Padding = new Padding(3);
+            tpgFaturas.Size = new Size(849, 510);
+            tpgFaturas.TabIndex = 0;
+            tpgFaturas.Text = "Faturas";
+            tpgFaturas.UseVisualStyleBackColor = true;
+            // 
+            // panel8
+            // 
+            panel8.Controls.Add(panel1);
+            panel8.Dock = DockStyle.Fill;
+            panel8.Location = new Point(3, 3);
+            panel8.Name = "panel8";
+            panel8.Size = new Size(843, 504);
+            panel8.TabIndex = 0;
+            // 
+            // tpgCobrancas
+            // 
+            tpgCobrancas.Controls.Add(lblEmConstrucao);
+            tpgCobrancas.Location = new Point(4, 24);
+            tpgCobrancas.Name = "tpgCobrancas";
+            tpgCobrancas.Padding = new Padding(3);
+            tpgCobrancas.Size = new Size(849, 510);
+            tpgCobrancas.TabIndex = 1;
+            tpgCobrancas.Text = "Cobrancas";
+            tpgCobrancas.UseVisualStyleBackColor = true;
+            // 
+            // lblEmConstrucao
+            // 
+            lblEmConstrucao.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblEmConstrucao.AutoSize = true;
+            lblEmConstrucao.Font = new Font("Segoe UI", 20F);
+            lblEmConstrucao.ForeColor = Color.IndianRed;
+            lblEmConstrucao.Location = new Point(227, 158);
+            lblEmConstrucao.Name = "lblEmConstrucao";
+            lblEmConstrucao.Size = new Size(283, 37);
+            lblEmConstrucao.TabIndex = 0;
+            lblEmConstrucao.Text = "🚧 Em Construção 🚧";
+            // 
             // FattureWebForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(857, 450);
-            Controls.Add(panel1);
+            ClientSize = new Size(857, 538);
+            Controls.Add(panel7);
             MinimumSize = new Size(816, 489);
             Name = "FattureWebForm";
             StartPosition = FormStartPosition.CenterScreen;
@@ -337,10 +466,17 @@
             panel4.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
+            panel6.ResumeLayout(false);
             grbFiltros.ResumeLayout(false);
             grbFiltros.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)faturasViewDtoBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)conteudoBindingSource).EndInit();
+            panel7.ResumeLayout(false);
+            tabControl1.ResumeLayout(false);
+            tpgFaturas.ResumeLayout(false);
+            panel8.ResumeLayout(false);
+            tpgCobrancas.ResumeLayout(false);
+            tpgCobrancas.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -374,5 +510,16 @@
         private Label lblSenha;
         private TextBox txtUsuario;
         private Button btnBuscarFaturas;
+        private Panel panel6;
+        private ComboBox cmbInstalacao;
+        private Panel panel7;
+        private TabControl tabControl1;
+        private TabPage tpgFaturas;
+        private Panel panel8;
+        private TabPage tpgCobrancas;
+        private Label lblEmConstrucao;
+        private Button btnLimparFiltros;
+        private TextBox txtQtdFaturasFiltradas;
+        private Label label1;
     }
 }
