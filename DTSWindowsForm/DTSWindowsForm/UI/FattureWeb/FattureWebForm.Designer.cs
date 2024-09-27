@@ -33,12 +33,6 @@
             panel5 = new Panel();
             panel3 = new Panel();
             gridFaturas = new DataGridView();
-            faturaIdDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            instalacaoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            mesReferenciaDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            distribuidoraDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            idInstalacaoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            dataEmissaoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             faturasViewDtoBindingSource1 = new BindingSource(components);
             panel4 = new Panel();
             txtQtdFaturasFiltradas = new TextBox();
@@ -52,12 +46,12 @@
             cmbInstalacao = new ComboBox();
             btnFiltrar = new Button();
             lblFiltroInstalacao = new Label();
+            btnDownloadCsv = new Button();
             btnBuscarFaturas = new Button();
             txtSenha = new TextBox();
             lblSenha = new Label();
             txtUsuario = new TextBox();
             lblUsuario = new Label();
-            btnDownloadCsv = new Button();
             faturasViewDtoBindingSource = new BindingSource(components);
             conteudoBindingSource = new BindingSource(components);
             bcwCarregaDados = new System.ComponentModel.BackgroundWorker();
@@ -117,11 +111,8 @@
             // gridFaturas
             // 
             gridFaturas.AllowUserToOrderColumns = true;
-            gridFaturas.AutoGenerateColumns = false;
             gridFaturas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             gridFaturas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            gridFaturas.Columns.AddRange(new DataGridViewColumn[] { faturaIdDataGridViewTextBoxColumn, instalacaoDataGridViewTextBoxColumn, mesReferenciaDataGridViewTextBoxColumn, distribuidoraDataGridViewTextBoxColumn, idInstalacaoDataGridViewTextBoxColumn, dataEmissaoDataGridViewTextBoxColumn });
-            gridFaturas.DataSource = faturasViewDtoBindingSource1;
             gridFaturas.Dock = DockStyle.Fill;
             gridFaturas.Location = new Point(0, 0);
             gridFaturas.Name = "gridFaturas";
@@ -131,52 +122,6 @@
             gridFaturas.Size = new Size(843, 310);
             gridFaturas.TabIndex = 0;
             gridFaturas.DataSourceChanged += gridFaturas_DataSourceChanged;
-            // 
-            // faturaIdDataGridViewTextBoxColumn
-            // 
-            faturaIdDataGridViewTextBoxColumn.DataPropertyName = "FaturaId";
-            faturaIdDataGridViewTextBoxColumn.HeaderText = "FaturaId";
-            faturaIdDataGridViewTextBoxColumn.Name = "faturaIdDataGridViewTextBoxColumn";
-            faturaIdDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // instalacaoDataGridViewTextBoxColumn
-            // 
-            instalacaoDataGridViewTextBoxColumn.DataPropertyName = "Instalacao";
-            instalacaoDataGridViewTextBoxColumn.HeaderText = "Instalacao";
-            instalacaoDataGridViewTextBoxColumn.Name = "instalacaoDataGridViewTextBoxColumn";
-            instalacaoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // mesReferenciaDataGridViewTextBoxColumn
-            // 
-            mesReferenciaDataGridViewTextBoxColumn.DataPropertyName = "MesReferencia";
-            mesReferenciaDataGridViewTextBoxColumn.HeaderText = "MesReferencia";
-            mesReferenciaDataGridViewTextBoxColumn.Name = "mesReferenciaDataGridViewTextBoxColumn";
-            mesReferenciaDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // distribuidoraDataGridViewTextBoxColumn
-            // 
-            distribuidoraDataGridViewTextBoxColumn.DataPropertyName = "Distribuidora";
-            distribuidoraDataGridViewTextBoxColumn.HeaderText = "Distribuidora";
-            distribuidoraDataGridViewTextBoxColumn.Name = "distribuidoraDataGridViewTextBoxColumn";
-            distribuidoraDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // idInstalacaoDataGridViewTextBoxColumn
-            // 
-            idInstalacaoDataGridViewTextBoxColumn.DataPropertyName = "IdInstalacao";
-            idInstalacaoDataGridViewTextBoxColumn.HeaderText = "IdInstalacao";
-            idInstalacaoDataGridViewTextBoxColumn.Name = "idInstalacaoDataGridViewTextBoxColumn";
-            idInstalacaoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // dataEmissaoDataGridViewTextBoxColumn
-            // 
-            dataEmissaoDataGridViewTextBoxColumn.DataPropertyName = "DataEmissao";
-            dataEmissaoDataGridViewTextBoxColumn.HeaderText = "DataEmissao";
-            dataEmissaoDataGridViewTextBoxColumn.Name = "dataEmissaoDataGridViewTextBoxColumn";
-            dataEmissaoDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // faturasViewDtoBindingSource1
-            // 
-            faturasViewDtoBindingSource1.DataSource = typeof(dtos.FaturasViewDto);
             // 
             // panel4
             // 
@@ -310,6 +255,20 @@
             lblFiltroInstalacao.TabIndex = 1;
             lblFiltroInstalacao.Text = "Instalação";
             // 
+            // btnDownloadCsv
+            // 
+            btnDownloadCsv.BackColor = Color.DarkOrange;
+            btnDownloadCsv.FlatStyle = FlatStyle.Popup;
+            btnDownloadCsv.Font = new Font("Segoe UI", 9F);
+            btnDownloadCsv.ForeColor = SystemColors.ControlText;
+            btnDownloadCsv.Location = new Point(217, 67);
+            btnDownloadCsv.Name = "btnDownloadCsv";
+            btnDownloadCsv.Size = new Size(95, 25);
+            btnDownloadCsv.TabIndex = 6;
+            btnDownloadCsv.Text = "🔼 Exportar";
+            btnDownloadCsv.UseVisualStyleBackColor = false;
+            btnDownloadCsv.Click += btnDownloadCsv_Click;
+            // 
             // btnBuscarFaturas
             // 
             btnBuscarFaturas.BackColor = Color.GreenYellow;
@@ -356,28 +315,6 @@
             lblUsuario.Size = new Size(36, 15);
             lblUsuario.TabIndex = 8;
             lblUsuario.Text = "Email";
-            // 
-            // btnDownloadCsv
-            // 
-            btnDownloadCsv.BackColor = Color.DarkOrange;
-            btnDownloadCsv.FlatStyle = FlatStyle.Popup;
-            btnDownloadCsv.Font = new Font("Segoe UI", 9F);
-            btnDownloadCsv.ForeColor = SystemColors.ControlText;
-            btnDownloadCsv.Location = new Point(217, 67);
-            btnDownloadCsv.Name = "btnDownloadCsv";
-            btnDownloadCsv.Size = new Size(95, 25);
-            btnDownloadCsv.TabIndex = 6;
-            btnDownloadCsv.Text = "🔼 Exportar";
-            btnDownloadCsv.UseVisualStyleBackColor = false;
-            btnDownloadCsv.Click += btnDownloadCsv_Click;
-            // 
-            // faturasViewDtoBindingSource
-            // 
-            faturasViewDtoBindingSource.DataSource = typeof(dtos.FaturasViewDto);
-            // 
-            // conteudoBindingSource
-            // 
-            conteudoBindingSource.DataSource = typeof(dtos.Conteudo);
             // 
             // bcwCarregaDados
             // 

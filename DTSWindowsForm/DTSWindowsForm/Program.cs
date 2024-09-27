@@ -20,13 +20,8 @@ internal static class Program
         AppSettings = new Settings
         {
             Connection = Configuration["Settings:Connection"],
-            UsuarioProducao = Configuration["Settings:UsuarioProducao"],
-            SenhaProducao = Configuration["Settings:SenhaProducao"],
-            UsuarioDev = Configuration["Settings:UsuarioDev"],
-            SenhaDev = Configuration["Settings:SenhaDev"],
-            UsuarioQa = Configuration["Settings:UsuarioQa"],
-            SenhaQa = Configuration["Settings:SenhaQa"],
-            TipoConta = Enum.Parse<TipoContaEnum>(Configuration["Settings:TipoConta"])
+            Usuario = Configuration["Settings:Usuario"],
+            Senha = Configuration["Settings:Senha"]
         };
 
         Application.SetHighDpiMode(HighDpiMode.SystemAware);

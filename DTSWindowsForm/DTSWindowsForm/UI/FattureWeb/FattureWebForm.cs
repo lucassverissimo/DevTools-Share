@@ -1,5 +1,4 @@
-﻿using DTSWindowsForm.Config;
-using DTSWindowsForm.Extensions;
+﻿using DTSWindowsForm.Extensions;
 using DTSWindowsForm.UI.FattureWeb.dtos;
 using DTSWindowsForm.UI.UserControls;
 using Newtonsoft.Json;
@@ -31,54 +30,36 @@ namespace DTSWindowsForm.UI.FattureWeb
 
             if (Program.AppSettings != null)
             {
-                txtUsuario.Text = Program.AppSettings.TipoConta switch
-                {
-                    TipoContaEnum.Prod => Program.AppSettings.UsuarioProducao,
-                    TipoContaEnum.Dev => Program.AppSettings.UsuarioDev,
-                    TipoContaEnum.Qa => Program.AppSettings.UsuarioQa,
-                    _ => ""
-                };
-
-                txtSenha.Text = Program.AppSettings.TipoConta switch
-                {
-                    TipoContaEnum.Prod => Program.AppSettings.SenhaProducao,
-                    TipoContaEnum.Dev => Program.AppSettings.SenhaDev,
-                    TipoContaEnum.Qa => Program.AppSettings.SenhaQa,
-                    _ => ""
-                };
+                txtUsuario.Text = Program.AppSettings.Usuario;
+                txtSenha.Text = Program.AppSettings.Senha;
             }
         }
 
         private void StartLoading()
         {
-            //pcbLoading.Visible = true;
             loadingControl.ShowLoading(this, "aguarde...");
         }
 
         private void StopLoading()
         {
-            //pcbLoading.Visible = false;
             loadingControl.HideLoading(this);
         }
 
         private void dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            // Obtenha o nome da coluna clicada
             string columnName = gridFaturas.Columns[e.ColumnIndex].DataPropertyName;
             var dadosGrid = gridFaturas.DataSource as List<FaturasViewDto>;
-            // Se clicou na mesma coluna, alterne a ordem
+
             if (ultimaColunaOrdenada == columnName)
             {
                 direcaoOrdenacao = (direcaoOrdenacao == SortOrder.Ascending) ? SortOrder.Descending : SortOrder.Ascending;
             }
             else
             {
-                // Se é uma nova coluna, ordene ascendente por padrão
                 direcaoOrdenacao = SortOrder.Ascending;
                 ultimaColunaOrdenada = columnName;
             }
 
-            // Realize a ordenação com base na coluna clicada e a direção de ordenação
             if (direcaoOrdenacao == SortOrder.Ascending)
             {
                 dadosGrid = dadosGrid.OrderBy(d => GetPropertyValue(d, columnName)).ToList();
@@ -88,7 +69,6 @@ namespace DTSWindowsForm.UI.FattureWeb
                 dadosGrid = dadosGrid.OrderByDescending(d => GetPropertyValue(d, columnName)).ToList();
             }
 
-            // Atualize a fonte de dados do DataGridView
             gridFaturas.DataSource = null;
             gridFaturas.DataSource = dadosGrid;
             PreencherComboBoxInstalacao();
@@ -127,22 +107,23 @@ namespace DTSWindowsForm.UI.FattureWeb
             {
                 DateTime dataMesRef = DateTime.Parse(dado.Conteudo.Fatura.MesReferencia);
                 var consumoTotal = dado.Conteudo.Fatura.HistoricoFaturamento != null ? dado.Conteudo.Fatura.HistoricoFaturamento.FirstOrDefault().EnergiaAtiva : 0;
-                FaturasViewDto fatura = new FaturasViewDto(
-                    FaturaId: dado.Conteudo.FaturaId.ToString(),
-                    Instalacao: dado.Conteudo.UnidadeConsumidora.Instalacao,
-                    MesReferencia: dataMesRef.ToString("MMyyyy"),
-                    Distribuidora: dado.Conteudo.Distribuidora.ToString(),
-                    IdInstalacao: dado.InstalacaoId.ToString(),
-                    ConsumoTotal: consumoTotal.ToString(),
-                    DataEmissao: dado.Conteudo.Fatura.DataEmissao, qualquerCoisa: ""
-                );
+                FaturasViewDto fatura = new FaturasViewDto();
+                fatura.FaturaId = dado.Conteudo.FaturaId.ToString();
+                fatura.Instalacao = dado.Conteudo.UnidadeConsumidora.Instalacao;
+                fatura.MesReferencia = dataMesRef.ToString("MMyyyy");
+                fatura.Distribuidora = dado.Conteudo.Distribuidora.ToString();
+                fatura.IdInstalacao = dado.InstalacaoId.ToString();
+                fatura.ConsumoTotal = consumoTotal.ToString();
+                fatura.DataEmissao = dado.Conteudo.Fatura.DataEmissao;
+                fatura.qualquerCoisa = "teste";
+
                 faturas.Add(fatura);
             }
 
             gridFaturas.DataSource = faturas;
             PreencherComboBoxInstalacao();
-
         }
+
         private void PreencherComboBoxInstalacao()
         {
             // Primeiro, limpe qualquer valor existente no ComboBox
