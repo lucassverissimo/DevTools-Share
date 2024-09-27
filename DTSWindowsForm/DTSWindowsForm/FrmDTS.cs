@@ -1,4 +1,5 @@
-﻿using DTSWindowsForm.UI.Dashboard;
+﻿using DTSWindowsForm.UI.BancoLocal;
+using DTSWindowsForm.UI.Dashboard;
 using DTSWindowsForm.UI.FattureWeb;
 
 namespace DTSWindowsForm
@@ -31,7 +32,7 @@ namespace DTSWindowsForm
 
         private void btnBancoLocal_Click(object sender, EventArgs e)
         {
-            MethodNotImplemented();
+            OpenForm<BancoLocalForm>();
         }
 
         private void btnDashboard_Click(object sender, EventArgs e)

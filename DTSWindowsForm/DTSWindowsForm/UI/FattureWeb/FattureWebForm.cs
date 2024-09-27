@@ -115,7 +115,6 @@ namespace DTSWindowsForm.UI.FattureWeb
                 fatura.IdInstalacao = dado.InstalacaoId.ToString();
                 fatura.ConsumoTotal = consumoTotal.ToString();
                 fatura.DataEmissao = dado.Conteudo.Fatura.DataEmissao;
-                fatura.qualquerCoisa = "teste";
 
                 faturas.Add(fatura);
             }
