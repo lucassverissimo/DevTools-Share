@@ -33,7 +33,6 @@
             panel5 = new Panel();
             panel3 = new Panel();
             gridFaturas = new DataGridView();
-            faturasViewDtoBindingSource1 = new BindingSource(components);
             panel4 = new Panel();
             txtQtdFaturasFiltradas = new TextBox();
             label1 = new Label();
@@ -52,6 +51,7 @@
             lblSenha = new Label();
             txtUsuario = new TextBox();
             lblUsuario = new Label();
+            faturasViewDtoBindingSource1 = new BindingSource(components);
             faturasViewDtoBindingSource = new BindingSource(components);
             conteudoBindingSource = new BindingSource(components);
             bcwCarregaDados = new System.ComponentModel.BackgroundWorker();
@@ -61,15 +61,16 @@
             panel8 = new Panel();
             tpgCobrancas = new TabPage();
             lblEmConstrucao = new Label();
+            chbFaturasDuplicadas = new CheckBox();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gridFaturas).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)faturasViewDtoBindingSource1).BeginInit();
             panel4.SuspendLayout();
             panel2.SuspendLayout();
             panel6.SuspendLayout();
             grbFiltros.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)faturasViewDtoBindingSource1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)faturasViewDtoBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)conteudoBindingSource).BeginInit();
             panel7.SuspendLayout();
@@ -197,6 +198,7 @@
             // 
             // grbFiltros
             // 
+            grbFiltros.Controls.Add(chbFaturasDuplicadas);
             grbFiltros.Controls.Add(btnLimparFiltros);
             grbFiltros.Controls.Add(cmbInstalacao);
             grbFiltros.Controls.Add(btnFiltrar);
@@ -384,6 +386,16 @@
             lblEmConstrucao.TabIndex = 0;
             lblEmConstrucao.Text = "🚧 Em Construção 🚧";
             // 
+            // chbFaturasDuplicadas
+            // 
+            chbFaturasDuplicadas.AutoSize = true;
+            chbFaturasDuplicadas.Location = new Point(146, 42);
+            chbFaturasDuplicadas.Name = "chbFaturasDuplicadas";
+            chbFaturasDuplicadas.Size = new Size(124, 19);
+            chbFaturasDuplicadas.TabIndex = 7;
+            chbFaturasDuplicadas.Text = "Faturas duplicadas";
+            chbFaturasDuplicadas.UseVisualStyleBackColor = true;
+            // 
             // FattureWebForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -398,7 +410,6 @@
             panel5.ResumeLayout(false);
             panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)gridFaturas).EndInit();
-            ((System.ComponentModel.ISupportInitialize)faturasViewDtoBindingSource1).EndInit();
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             panel2.ResumeLayout(false);
@@ -406,6 +417,7 @@
             panel6.ResumeLayout(false);
             grbFiltros.ResumeLayout(false);
             grbFiltros.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)faturasViewDtoBindingSource1).EndInit();
             ((System.ComponentModel.ISupportInitialize)faturasViewDtoBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)conteudoBindingSource).EndInit();
             panel7.ResumeLayout(false);
@@ -458,5 +470,6 @@
         private Button btnLimparFiltros;
         private TextBox txtQtdFaturasFiltradas;
         private Label label1;
+        private CheckBox chbFaturasDuplicadas;
     }
 }

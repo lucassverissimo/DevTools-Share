@@ -182,6 +182,20 @@ namespace DTSWindowsForm.UI.FattureWeb
                 dadosFiltrados = dadosFiltrados.Where(x => DateTime.Parse(x.Conteudo.Fatura.DataEmissao) == filtros.DataEmissao.Value).ToList();
             }
 
+            if (chbFaturasDuplicadas.Checked)
+            {
+                dadosFiltrados = dadosFiltrados
+                    .GroupBy(x => new
+                    {
+                        x.Conteudo.Fatura.MesReferencia,
+                        x.Conteudo.UnidadeConsumidora.Instalacao,
+                        x.Conteudo.Distribuidora
+                    })
+                    .Where(g => g.Count() > 1)
+                    .SelectMany(g => g)
+                    .ToList();
+            }
+
             return dadosFiltrados;
         }
 
