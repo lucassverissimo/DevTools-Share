@@ -40,6 +40,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\DataSources\" />
+    <Folder Include="UI\BancoLocal\Scripts\" />
   </ItemGroup>
 
 </Project>

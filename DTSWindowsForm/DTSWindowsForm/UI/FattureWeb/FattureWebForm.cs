@@ -352,5 +352,10 @@ namespace DTSWindowsForm.UI.FattureWeb
             txtQtdFaturas.Text = dados.Count.ToString();
             txtQtdFaturasFiltradas.Text = dadosFiltrados.Count().ToString();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

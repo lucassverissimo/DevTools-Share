@@ -41,6 +41,7 @@
             panel2 = new Panel();
             panel6 = new Panel();
             grbFiltros = new GroupBox();
+            chbFaturasDuplicadas = new CheckBox();
             btnLimparFiltros = new Button();
             cmbInstalacao = new ComboBox();
             btnFiltrar = new Button();
@@ -61,7 +62,6 @@
             panel8 = new Panel();
             tpgCobrancas = new TabPage();
             lblEmConstrucao = new Label();
-            chbFaturasDuplicadas = new CheckBox();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
             panel3.SuspendLayout();
@@ -211,6 +211,16 @@
             grbFiltros.TabIndex = 7;
             grbFiltros.TabStop = false;
             grbFiltros.Text = "Filtros";
+            // 
+            // chbFaturasDuplicadas
+            // 
+            chbFaturasDuplicadas.AutoSize = true;
+            chbFaturasDuplicadas.Location = new Point(146, 42);
+            chbFaturasDuplicadas.Name = "chbFaturasDuplicadas";
+            chbFaturasDuplicadas.Size = new Size(124, 19);
+            chbFaturasDuplicadas.TabIndex = 7;
+            chbFaturasDuplicadas.Text = "Faturas duplicadas";
+            chbFaturasDuplicadas.UseVisualStyleBackColor = true;
             // 
             // btnLimparFiltros
             // 
@@ -385,16 +395,6 @@
             lblEmConstrucao.Size = new Size(283, 37);
             lblEmConstrucao.TabIndex = 0;
             lblEmConstrucao.Text = "🚧 Em Construção 🚧";
-            // 
-            // chbFaturasDuplicadas
-            // 
-            chbFaturasDuplicadas.AutoSize = true;
-            chbFaturasDuplicadas.Location = new Point(146, 42);
-            chbFaturasDuplicadas.Name = "chbFaturasDuplicadas";
-            chbFaturasDuplicadas.Size = new Size(124, 19);
-            chbFaturasDuplicadas.TabIndex = 7;
-            chbFaturasDuplicadas.Text = "Faturas duplicadas";
-            chbFaturasDuplicadas.UseVisualStyleBackColor = true;
             // 
             // FattureWebForm
             // 
