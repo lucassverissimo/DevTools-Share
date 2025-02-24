@@ -9,5 +9,6 @@
         public string? IdInstalacao { get; set; }
         public string? DataEmissao { get; set; }
         public string? ConsumoTotal { get; set; }
+        public double? EnergiaInjetada { get; set; }
     }
 }

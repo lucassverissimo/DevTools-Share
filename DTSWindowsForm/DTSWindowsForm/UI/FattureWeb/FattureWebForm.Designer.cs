@@ -404,6 +404,7 @@
             Controls.Add(panel7);
             MinimumSize = new Size(816, 489);
             Name = "FattureWebForm";
+            ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "DevTools - Share (FattureWeb)";
             panel1.ResumeLayout(false);

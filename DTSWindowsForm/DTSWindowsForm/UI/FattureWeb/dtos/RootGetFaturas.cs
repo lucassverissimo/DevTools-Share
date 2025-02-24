@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.ComponentModel;
 using System.Text.Json.Serialization;
 
 namespace DTSWindowsForm.UI.FattureWeb.dtos;
@@ -39,7 +40,38 @@ public record Conteudo(
     [property: JsonProperty("unidade_consumidora")]
     [property: JsonPropertyName("unidade_consumidora")]
         UnidadeConsumidora UnidadeConsumidora
-);
+)
+{
+
+    internal ModelosFaturasEnum ObtemModeloFaturaGdc()
+    {
+        if (Fatura.TemConsumoCompensadoKwh)
+        {
+            return ModelosFaturasEnum.Modelo5;
+        }
+
+        if (!UnidadeConsumidora.EhBaixaTensao)
+        {
+            return ModelosFaturasEnum.Modelo4;
+        }
+
+        if (Fatura.TemConsumoTeKwh)
+        {
+            return ModelosFaturasEnum.Modelo1;
+        }
+        else
+        {
+            if (Fatura.TemConsumoKwhComValorSemImpostos)
+            {
+                return ModelosFaturasEnum.Modelo2;
+            }
+            else
+            {
+                return ModelosFaturasEnum.Modelo3;
+            }
+        }
+    }
+}
 
 public record Dado(
     [property: JsonProperty("id")][property: JsonPropertyName("id")] int? Id,
@@ -175,7 +207,38 @@ public record Fatura(
     [property: JsonProperty("composicao")]
     [property: JsonPropertyName("composicao")]
         Composicao Composicao
-);
+)
+{
+    public bool TemConsumoCompensadoKwh =>
+           Produtos != null && Produtos.Any(
+               x => x.Descricao.Equals("Consumo Compensado kWh", System.StringComparison.OrdinalIgnoreCase)
+           );
+    public bool TemConsumoTeKwh =>
+            Produtos != null && Produtos.Any(
+                x => x.Descricao.Equals("Consumo TE KWh", System.StringComparison.OrdinalIgnoreCase)
+            );
+    public bool TemConsumoKwhComValorSemImpostos =>
+        Produtos != null && Produtos.Any(
+            x =>
+                x.Descricao.Equals("Consumo kWh", StringComparison.OrdinalIgnoreCase)
+                && x.ValorSemImpostos > 0
+        );
+    public Produto? GetProdutoPorDescricao(string descricaoProduto)
+    {
+        if (string.IsNullOrWhiteSpace(descricaoProduto))
+        {
+            throw new ArgumentNullException(nameof(descricaoProduto), "A descrição do produto não pode ser nula ou vazia.");
+        }
+
+        if (Produtos == null)
+        {
+            return null;
+        }
+
+        var produto = Produtos.FirstOrDefault(x => x.Descricao == descricaoProduto);
+        return produto;
+    }
+}
 
 public record Fic(
     [property: JsonProperty("meta_mensal")]
@@ -391,4 +454,24 @@ public record UnidadeConsumidora(
     [property: JsonProperty("inscricao_estadual")]
     [property: JsonPropertyName("inscricao_estadual")]
         string InscricaoEstadual
-);
+)
+{
+    public bool EhBaixaTensao => CategoriaTensao == "BT";
+};
+public enum ModelosFaturasEnum : int
+{
+    [Description("Modelo 1")]
+    Modelo1 = 1,
+
+    [Description("Modelo 2")]
+    Modelo2 = 2,
+
+    [Description("Modelo 3")]
+    Modelo3 = 3,
+
+    [Description("Modelo 4")]
+    Modelo4 = 4,
+
+    [Description("Modelo 5")]
+    Modelo5 = 5
+}
