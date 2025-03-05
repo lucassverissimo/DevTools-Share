@@ -50,6 +50,11 @@ namespace DTSWindowsForm.UI.FattureWeb
             string columnName = gridFaturas.Columns[e.ColumnIndex].DataPropertyName;
             var dadosGrid = gridFaturas.DataSource as List<FaturasViewDto>;
 
+            var ordemColunas = gridFaturas.Columns.Cast<DataGridViewColumn>()
+                .OrderBy(c => c.DisplayIndex)
+                .Select(c => c.Name)
+                .ToList();
+
             if (_ultimaColunaOrdenada == columnName)
             {
                 _direcaoOrdenacao = (_direcaoOrdenacao == SortOrder.Ascending) ? SortOrder.Descending : SortOrder.Ascending;
@@ -68,9 +73,14 @@ namespace DTSWindowsForm.UI.FattureWeb
             {
                 dadosGrid = dadosGrid.OrderByDescending(d => GetPropertyValue(d, columnName)).ToList();
             }
-
             gridFaturas.DataSource = null;
             gridFaturas.DataSource = dadosGrid;
+
+            foreach (var nomeColuna in ordemColunas)
+            {
+                gridFaturas.Columns[nomeColuna].DisplayIndex = ordemColunas.IndexOf(nomeColuna);
+            }
+
             PreencherComboBoxInstalacao();
         }
         private object GetPropertyValue(object obj, string propertyName)

@@ -50,16 +50,21 @@ namespace DTSWindowsForm.Extensions
                     headerStyle.Font.FontColor = XLColor.White;
                     headerStyle.Fill.BackgroundColor = XLColor.BlueGray;
 
-                    for (int col = 0; col < grid.Columns.Count; col++)
+                    var orderedColumns = grid.Columns.Cast<DataGridViewColumn>()
+                                             .OrderBy(c => c.DisplayIndex)
+                                             .ToList();
+
+                    for (int col = 0; col < orderedColumns.Count; col++)
                     {
-                        worksheet.Cell(1, col + 1).Value = grid.Columns[col].HeaderText;
+                        worksheet.Cell(1, col + 1).Value = orderedColumns[col].HeaderText;
                     }
 
                     for (int row = 0; row < grid.Rows.Count; row++)
                     {
-                        for (int col = 0; col < grid.Columns.Count; col++)
+                        for (int col = 0; col < orderedColumns.Count; col++)
                         {
-                            worksheet.Cell(row + 2, col + 1).Value = grid.Rows[row].Cells[col].Value?.ToString() ?? string.Empty;
+                            var columnIndex = orderedColumns[col].Index;
+                            worksheet.Cell(row + 2, col + 1).Value = grid.Rows[row].Cells[columnIndex].Value?.ToString() ?? string.Empty;
                         }
                     }
 
