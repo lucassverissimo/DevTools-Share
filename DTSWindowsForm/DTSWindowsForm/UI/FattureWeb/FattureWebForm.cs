@@ -115,7 +115,8 @@ namespace DTSWindowsForm.UI.FattureWeb
                 fatura.IdInstalacao = dado.InstalacaoId.ToString();
                 fatura.ConsumoTotal = consumoTotal.ToString();
                 fatura.DataEmissao = dado.Conteudo.Fatura.DataEmissao;
-                fatura.EnergiaInjetada = GetEnergiaInjetada(dado);
+                fatura.DataProcessamento = dado.DataProcessamento.ToString();
+                ObtemDadosFatura(fatura, dado);
                 faturas.Add(fatura);
             }
 
@@ -123,10 +124,10 @@ namespace DTSWindowsForm.UI.FattureWeb
             PreencherComboBoxInstalacao();
         }
 
-        private double? GetEnergiaInjetada(Dado dado)
+        private void ObtemDadosFatura(FaturasViewDto fatura, Dado dado)
         {
-            double? energiaInjetada = 0;
             var contentFatura = dado.Conteudo;
+
             #region Obtenção dos produtos da fatura
             var produtoConsumoCompensadoKwh = contentFatura.Fatura.GetProdutoPorDescricao("Consumo Compensado kWh");
             var produtoConsumoKwh = contentFatura.Fatura.GetProdutoPorDescricao("Consumo kWh");
@@ -158,25 +159,32 @@ namespace DTSWindowsForm.UI.FattureWeb
             var produtoBandeiraEnergiaInjetadaGDEscassesHidrica = contentFatura.Fatura.GetProdutoPorDescricao("Bandeira Energia Injetada GD Escassez Hídrica");
             var produtoAjusteFaturamentoGD_REN_1059_2023 = contentFatura.Fatura.GetProdutoPorDescricao("Ajuste Faturamento GD - REN 1.059/2023");
             #endregion
-            ModelosFaturasEnum ModeloFatura = contentFatura.ObtemModeloFaturaGdc();
-            if (produtoEnergiaInjetadaKwh != null && ModeloFatura != ModelosFaturasEnum.Modelo5)
+
+            ModelosFaturasEnum modeloFatura = contentFatura.ObtemModeloFaturaGdc();
+            fatura.ModeloFatura = modeloFatura;
+            if (produtoEnergiaInjetadaKwh != null && modeloFatura != ModelosFaturasEnum.Modelo5)
             {
                 var produto = produtoEnergiaInjetadaKwh;
-                energiaInjetada = produto.Quantidade != null ? Math.Abs(produto.Quantidade.Value) : 0;
+                fatura.EnergiaInjetada = produto.Quantidade != null ? Math.Abs(produto.Quantidade.Value) : 0;
             }
 
-            if (produtoConsumoCompensadoKwh != null && ModeloFatura == ModelosFaturasEnum.Modelo5)
+            if (produtoConsumoCompensadoKwh != null && modeloFatura == ModelosFaturasEnum.Modelo5)
             {
                 var produto = produtoConsumoCompensadoKwh;
-                energiaInjetada = produto.Quantidade != null ? Math.Abs(produto.Quantidade.Value) : 0;
+                fatura.EnergiaInjetada = produto.Quantidade != null ? Math.Abs(produto.Quantidade.Value) : 0;
             }
             if (produtoEnergiaInjetadaTUSDKwh != null)
             {
                 var produto = produtoEnergiaInjetadaTUSDKwh;
-                energiaInjetada = produto.Quantidade != null ? Math.Abs(produto.Quantidade.Value) : null;
-
+                fatura.EnergiaInjetada = produto.Quantidade != null ? Math.Abs(produto.Quantidade.Value) : null;
             }
-            return energiaInjetada;
+            if (contentFatura.Outros.DebitoAutomatico.HasValue)
+            {
+                fatura.DebitoAutomatico = contentFatura.Outros.DebitoAutomatico.Value ? "Sim" : "Não";
+            }
+
+
+
         }
 
         private void PreencherComboBoxInstalacao()
@@ -323,7 +331,7 @@ namespace DTSWindowsForm.UI.FattureWeb
                     requestFaturas.Headers.Add("Fatture-AuthToken", _token);
                     requestFaturas.Headers.Add(
                         "Fatture-SearchFields",
-                        "id, instalacao_id, arquivo_id, status_fatura_id, status, data_criacao, data_atualizacao, processamento_id, usuario_id, email_fatura_id, email_fatura_assunto, data_processamento, erro_processamento, mes_referencia, data_vencimento, valor_total, conteudo"
+                        "id, instalacao_id, arquivo_id, status_fatura_id, status, data_criacao, data_atualizacao, processamento_id, usuario_id, email_fatura_id, data_processamento, erro_processamento, mes_referencia, data_vencimento, valor_total, conteudo"
                     );
 
                     var responseFaturas = clientFaturas.Send(requestFaturas);
@@ -345,6 +353,7 @@ namespace DTSWindowsForm.UI.FattureWeb
                     {
                         hasMoreData = false;
                     }
+                    hasMoreData = false;
                 }
                 catch
                 {

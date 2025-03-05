@@ -474,4 +474,5 @@ public enum ModelosFaturasEnum : int
 
     [Description("Modelo 5")]
     Modelo5 = 5
+
 }
