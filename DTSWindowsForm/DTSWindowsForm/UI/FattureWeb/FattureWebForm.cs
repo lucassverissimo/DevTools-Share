@@ -353,7 +353,6 @@ namespace DTSWindowsForm.UI.FattureWeb
                     {
                         hasMoreData = false;
                     }
-                    hasMoreData = false;
                 }
                 catch
                 {
