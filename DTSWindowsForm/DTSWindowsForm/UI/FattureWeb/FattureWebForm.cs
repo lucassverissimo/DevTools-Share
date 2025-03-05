@@ -413,6 +413,7 @@ namespace DTSWindowsForm.UI.FattureWeb
         private void LimparFiltros()
         {
             _filtros = new FiltrosFaturasDto();
+            chbFaturasDuplicadas.Checked = false;
             PreencherGridFaturas();
         }
 
