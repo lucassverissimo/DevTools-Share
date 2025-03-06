@@ -18,6 +18,7 @@ namespace DTSWindowsForm.Extensions
         {
             try
             {
+                MessageBox.Show("O arquivo será exportado");
                 if (grid == null || grid.Rows.Count == 0)
                 {
                     throw new ArgumentException("O DataGridView está vazio ou nulo.");

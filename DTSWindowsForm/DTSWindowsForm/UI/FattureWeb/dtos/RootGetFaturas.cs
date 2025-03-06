@@ -238,6 +238,16 @@ public record Fatura(
         var produto = Produtos.FirstOrDefault(x => x.Descricao == descricaoProduto);
         return produto;
     }
+
+    public string GetDescricaoProdutos()
+    {
+        if (Produtos == null)
+        {
+            return "";
+        }
+
+        return string.Join(" | ", Produtos.Select(x => x.Descricao).ToList());
+    }
 }
 
 public record Fic(
