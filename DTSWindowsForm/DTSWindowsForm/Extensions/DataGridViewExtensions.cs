@@ -18,7 +18,8 @@ namespace DTSWindowsForm.Extensions
         {
             try
             {
-                MessageBox.Show("O arquivo será exportado");
+                string fileName = $"{prefixFileName}_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+                MessageBox.Show($"O arquivo será exportado. \n{fileName}");
                 if (grid == null || grid.Rows.Count == 0)
                 {
                     throw new ArgumentException("O DataGridView está vazio ou nulo.");
@@ -39,7 +40,6 @@ namespace DTSWindowsForm.Extensions
                     }
                 }
 
-                string fileName = $"{prefixFileName}_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
                 string fullPath = Path.Combine(outputPath, fileName);
 
 
