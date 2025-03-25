@@ -364,6 +364,8 @@ namespace DTSWindowsForm.UI.FattureWeb
             {
                 fatura.DebitoAutomatico = contentFatura.Outros.DebitoAutomatico.Value ? "Sim" : "Não";
             }
+
+            fatura.ValorMuc = contentFatura.Fatura.GetValorMuc();
         }
 
         private List<Dado> FiltrarDados()

@@ -12,6 +12,7 @@ namespace DTSWindowsForm.UI.FattureWeb.dtos
         public string? DataProcessamento { get; set; }
         public string? ConsumoTotal { get; set; }
         public double? EnergiaInjetada { get; set; }
+        public decimal? ValorMuc { get; internal set; }
         public ModelosFaturasEnum ModeloFatura { get; set; }
         public string DebitoAutomatico { get; set; }
         public string DescricaoProdutos { get; internal set; }

@@ -68,7 +68,6 @@
             tpgFaturas = new TabPage();
             panel8 = new Panel();
             tpgCobrancas = new TabPage();
-            lblEmConstrucao = new Label();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
             panel3.SuspendLayout();
@@ -84,7 +83,6 @@
             tabControl1.SuspendLayout();
             tpgFaturas.SuspendLayout();
             panel8.SuspendLayout();
-            tpgCobrancas.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -450,7 +448,6 @@
             // 
             // tpgCobrancas
             // 
-            tpgCobrancas.Controls.Add(lblEmConstrucao);
             tpgCobrancas.Location = new Point(4, 24);
             tpgCobrancas.Name = "tpgCobrancas";
             tpgCobrancas.Padding = new Padding(3);
@@ -458,18 +455,6 @@
             tpgCobrancas.TabIndex = 1;
             tpgCobrancas.Text = "Cobrancas";
             tpgCobrancas.UseVisualStyleBackColor = true;
-            // 
-            // lblEmConstrucao
-            // 
-            lblEmConstrucao.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            lblEmConstrucao.AutoSize = true;
-            lblEmConstrucao.Font = new Font("Segoe UI", 20F);
-            lblEmConstrucao.ForeColor = Color.IndianRed;
-            lblEmConstrucao.Location = new Point(227, 158);
-            lblEmConstrucao.Name = "lblEmConstrucao";
-            lblEmConstrucao.Size = new Size(283, 37);
-            lblEmConstrucao.TabIndex = 0;
-            lblEmConstrucao.Text = "🚧 Em Construção 🚧";
             // 
             // FattureWebForm
             // 
@@ -500,8 +485,6 @@
             tabControl1.ResumeLayout(false);
             tpgFaturas.ResumeLayout(false);
             panel8.ResumeLayout(false);
-            tpgCobrancas.ResumeLayout(false);
-            tpgCobrancas.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -541,7 +524,6 @@
         private TabPage tpgFaturas;
         private Panel panel8;
         private TabPage tpgCobrancas;
-        private Label lblEmConstrucao;
         private Button btnLimparFiltros;
         private TextBox txtQtdFaturasFiltradas;
         private Label label1;

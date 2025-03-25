@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel;
+using System.Globalization;
 using System.Text.Json.Serialization;
 
 namespace DTSWindowsForm.UI.FattureWeb.dtos;
@@ -247,6 +248,47 @@ public record Fatura(
         }
 
         return string.Join(" | ", Produtos.Select(x => x.Descricao).ToList());
+    }
+
+    internal decimal? GetValorMuc()
+    {
+        try
+        {
+            var descricoesMuc = Produtos
+                .Where(p => p.DescricoesOriginais.Where(d => d.Contains("mUC")).Any())
+                .FirstOrDefault()?
+                .DescricoesOriginais.Where(d => d.Contains("mUC"))
+                .ToList();
+            decimal valor = 0;
+            if (descricoesMuc != null)
+            {
+                foreach (string desc in descricoesMuc)
+                {
+                    try
+                    {
+                        var valorMucString = desc.ToLower()
+                            .Replace(" ", "")
+                            .Split("quant:")[1]
+                            .Split(";")[0];
+
+                        valor += Math.Abs(
+                            Convert.ToDecimal(valorMucString, new CultureInfo("en-US"))
+                        );
+                    }
+                    catch (Exception)
+                    {
+                        valor = 0;
+                        break;
+                    }
+                }
+
+            }
+            return valor;
+        }
+        catch
+        {
+            return 0;
+        }
     }
 }
 
