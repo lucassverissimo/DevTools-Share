@@ -250,6 +250,16 @@ public record Fatura(
         return string.Join(" | ", Produtos.Select(x => x.Descricao).ToList());
     }
 
+    public string GetDescricoesOriginaisProdutos()
+    {
+        if (Produtos == null)
+        {
+            return "";
+        }
+
+        return string.Join(" | ", Produtos.Select(x => x.Descricao + (x.DescricoesOriginais.Any() ? " >> " + string.Join(" >> ", x.DescricoesOriginais) : "")));
+    }
+
     internal decimal? GetValorMuc()
     {
         try

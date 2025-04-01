@@ -310,6 +310,7 @@ namespace DTSWindowsForm.UI.FattureWeb
         {
             var contentFatura = dado.Conteudo;
             fatura.DescricaoProdutos = contentFatura.Fatura.GetDescricaoProdutos();
+            fatura.DescricoesOriginais = contentFatura.Fatura.GetDescricoesOriginaisProdutos();
             #region Obtenção dos produtos da fatura
             var produtoConsumoCompensadoKwh = contentFatura.Fatura.GetProdutoPorDescricao("Consumo Compensado kWh");
             var produtoConsumoKwh = contentFatura.Fatura.GetProdutoPorDescricao("Consumo kWh");
@@ -423,6 +424,11 @@ namespace DTSWindowsForm.UI.FattureWeb
             if (_filtros.DescricaoProdutos != null && _filtros.DescricaoProdutos.Any())
             {
                 dadosFiltrados = dadosFiltrados.Where(x => _filtros.DescricaoProdutos.Exists(l => x.Conteudo.Fatura.GetDescricaoProdutos().ToLower().Contains(l.ToLower().Trim()))).ToList();
+            }
+
+            if (_filtros.DescricoesOriginais != null && _filtros.DescricoesOriginais.Any())
+            {
+                dadosFiltrados = dadosFiltrados.Where(x => _filtros.DescricoesOriginais.Exists(l => x.Conteudo.Fatura.GetDescricoesOriginaisProdutos().ToLower().Contains(l.ToLower().Trim()))).ToList();
             }
 
             return dadosFiltrados;
@@ -637,6 +643,9 @@ namespace DTSWindowsForm.UI.FattureWeb
 
                 if (!string.IsNullOrEmpty(txbDescricaoProdutos.Text))
                     _filtros.DescricaoProdutos = txbDescricaoProdutos.Text.Split(';').ToList();
+
+                if (!string.IsNullOrEmpty(txbDescricoesOriginais.Text))
+                    _filtros.DescricoesOriginais = txbDescricoesOriginais.Text.Split(';').ToList();
 
                 PreencherGridFaturas();
             }

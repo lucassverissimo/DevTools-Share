@@ -1,4 +1,5 @@
 ﻿
+
 namespace DTSWindowsForm.UI.FattureWeb.dtos
 {
     public record FaturasViewDto()
@@ -12,9 +13,10 @@ namespace DTSWindowsForm.UI.FattureWeb.dtos
         public string? DataProcessamento { get; set; }
         public string? ConsumoTotal { get; set; }
         public double? EnergiaInjetada { get; set; }
-        public decimal? ValorMuc { get; internal set; }
+        public decimal? ValorMuc { get; set; }
         public ModelosFaturasEnum ModeloFatura { get; set; }
         public string DebitoAutomatico { get; set; }
-        public string DescricaoProdutos { get; internal set; }
+        public string DescricaoProdutos { get; set; }
+        public string DescricoesOriginais { get; set; }
     }
 }
