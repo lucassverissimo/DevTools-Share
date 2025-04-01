@@ -68,6 +68,9 @@
             tpgFaturas = new TabPage();
             panel8 = new Panel();
             tpgCobrancas = new TabPage();
+            label2 = new Label();
+            txbDescricaoProdutos = new TextBox();
+            lblDescricaoProdutos = new Label();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
             panel3.SuspendLayout();
@@ -93,16 +96,16 @@
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(843, 504);
+            panel1.Size = new Size(843, 645);
             panel1.TabIndex = 0;
             // 
             // panel5
             // 
             panel5.Controls.Add(panel3);
             panel5.Dock = DockStyle.Fill;
-            panel5.Location = new Point(0, 158);
+            panel5.Location = new Point(0, 221);
             panel5.Name = "panel5";
-            panel5.Size = new Size(843, 310);
+            panel5.Size = new Size(843, 388);
             panel5.TabIndex = 3;
             // 
             // panel3
@@ -112,7 +115,7 @@
             panel3.Dock = DockStyle.Fill;
             panel3.Location = new Point(0, 0);
             panel3.Name = "panel3";
-            panel3.Size = new Size(843, 310);
+            panel3.Size = new Size(843, 388);
             panel3.TabIndex = 1;
             // 
             // gridFaturas
@@ -125,7 +128,7 @@
             gridFaturas.Name = "gridFaturas";
             gridFaturas.RowTemplate.ReadOnly = true;
             gridFaturas.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            gridFaturas.Size = new Size(843, 310);
+            gridFaturas.Size = new Size(843, 388);
             gridFaturas.TabIndex = 0;
             gridFaturas.DataSourceChanged += gridFaturas_DataSourceChanged;
             // 
@@ -136,7 +139,7 @@
             panel4.Controls.Add(txtQtdFaturas);
             panel4.Controls.Add(lblFaturas);
             panel4.Dock = DockStyle.Bottom;
-            panel4.Location = new Point(0, 468);
+            panel4.Location = new Point(0, 609);
             panel4.Name = "panel4";
             panel4.Size = new Size(843, 36);
             panel4.TabIndex = 2;
@@ -188,7 +191,7 @@
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(843, 158);
+            panel2.Size = new Size(843, 221);
             panel2.TabIndex = 0;
             // 
             // panel6
@@ -196,13 +199,16 @@
             panel6.AutoScroll = true;
             panel6.Controls.Add(grbFiltros);
             panel6.Dock = DockStyle.Bottom;
-            panel6.Location = new Point(0, 50);
+            panel6.Location = new Point(0, 52);
             panel6.Name = "panel6";
-            panel6.Size = new Size(843, 108);
+            panel6.Size = new Size(843, 169);
             panel6.TabIndex = 13;
             // 
             // grbFiltros
             // 
+            grbFiltros.Controls.Add(label2);
+            grbFiltros.Controls.Add(txbDescricaoProdutos);
+            grbFiltros.Controls.Add(lblDescricaoProdutos);
             grbFiltros.Controls.Add(label4);
             grbFiltros.Controls.Add(txbInstalacao);
             grbFiltros.Controls.Add(label3);
@@ -220,7 +226,7 @@
             grbFiltros.ForeColor = SystemColors.ActiveCaptionText;
             grbFiltros.Location = new Point(0, 0);
             grbFiltros.Name = "grbFiltros";
-            grbFiltros.Size = new Size(843, 108);
+            grbFiltros.Size = new Size(843, 169);
             grbFiltros.TabIndex = 7;
             grbFiltros.TabStop = false;
             grbFiltros.Text = "Filtros";
@@ -311,7 +317,7 @@
             // 
             btnLimparFiltros.BackColor = Color.PaleGoldenrod;
             btnLimparFiltros.FlatStyle = FlatStyle.Popup;
-            btnLimparFiltros.Location = new Point(116, 76);
+            btnLimparFiltros.Location = new Point(109, 135);
             btnLimparFiltros.Name = "btnLimparFiltros";
             btnLimparFiltros.Size = new Size(95, 25);
             btnLimparFiltros.TabIndex = 4;
@@ -323,7 +329,7 @@
             // 
             btnFiltrar.BackColor = Color.GreenYellow;
             btnFiltrar.FlatStyle = FlatStyle.Popup;
-            btnFiltrar.Location = new Point(15, 76);
+            btnFiltrar.Location = new Point(8, 135);
             btnFiltrar.Name = "btnFiltrar";
             btnFiltrar.Size = new Size(95, 25);
             btnFiltrar.TabIndex = 2;
@@ -346,7 +352,7 @@
             btnDownloadCsv.FlatStyle = FlatStyle.Popup;
             btnDownloadCsv.Font = new Font("Segoe UI", 9F);
             btnDownloadCsv.ForeColor = SystemColors.ControlText;
-            btnDownloadCsv.Location = new Point(217, 76);
+            btnDownloadCsv.Location = new Point(210, 135);
             btnDownloadCsv.Name = "btnDownloadCsv";
             btnDownloadCsv.Size = new Size(95, 25);
             btnDownloadCsv.TabIndex = 6;
@@ -412,7 +418,7 @@
             panel7.Dock = DockStyle.Fill;
             panel7.Location = new Point(0, 0);
             panel7.Name = "panel7";
-            panel7.Size = new Size(857, 538);
+            panel7.Size = new Size(857, 679);
             panel7.TabIndex = 1;
             // 
             // tabControl1
@@ -423,7 +429,7 @@
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(857, 538);
+            tabControl1.Size = new Size(857, 679);
             tabControl1.TabIndex = 1;
             // 
             // tpgFaturas
@@ -432,7 +438,7 @@
             tpgFaturas.Location = new Point(4, 24);
             tpgFaturas.Name = "tpgFaturas";
             tpgFaturas.Padding = new Padding(3);
-            tpgFaturas.Size = new Size(849, 510);
+            tpgFaturas.Size = new Size(849, 651);
             tpgFaturas.TabIndex = 0;
             tpgFaturas.Text = "Faturas";
             tpgFaturas.UseVisualStyleBackColor = true;
@@ -443,7 +449,7 @@
             panel8.Dock = DockStyle.Fill;
             panel8.Location = new Point(3, 3);
             panel8.Name = "panel8";
-            panel8.Size = new Size(843, 504);
+            panel8.Size = new Size(843, 645);
             panel8.TabIndex = 0;
             // 
             // tpgCobrancas
@@ -456,13 +462,40 @@
             tpgCobrancas.Text = "Cobrancas";
             tpgCobrancas.UseVisualStyleBackColor = true;
             // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 7F);
+            label2.ForeColor = SystemColors.ControlDarkDark;
+            label2.Location = new Point(537, 119);
+            label2.Name = "label2";
+            label2.Size = new Size(72, 12);
+            label2.TabIndex = 27;
+            label2.Text = "separado por ';'";
+            // 
+            // txbDescricaoProdutos
+            // 
+            txbDescricaoProdutos.Location = new Point(8, 93);
+            txbDescricaoProdutos.Name = "txbDescricaoProdutos";
+            txbDescricaoProdutos.Size = new Size(601, 23);
+            txbDescricaoProdutos.TabIndex = 26;
+            // 
+            // lblDescricaoProdutos
+            // 
+            lblDescricaoProdutos.AutoSize = true;
+            lblDescricaoProdutos.Location = new Point(8, 74);
+            lblDescricaoProdutos.Name = "lblDescricaoProdutos";
+            lblDescricaoProdutos.Size = new Size(109, 15);
+            lblDescricaoProdutos.TabIndex = 25;
+            lblDescricaoProdutos.Text = "Descrição Produtos";
+            // 
             // FattureWebForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(857, 538);
+            ClientSize = new Size(857, 679);
             Controls.Add(panel7);
-            MinimumSize = new Size(816, 489);
+            MinimumSize = new Size(873, 718);
             Name = "FattureWebForm";
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
@@ -536,5 +569,8 @@
         private TextBox txbInstalacao;
         private Label label3;
         private Label label5;
+        private Label label2;
+        private TextBox txbDescricaoProdutos;
+        private Label lblDescricaoProdutos;
     }
 }

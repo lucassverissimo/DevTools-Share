@@ -9,6 +9,8 @@ namespace DTSWindowsForm
         public FrmDTS()
         {
             InitializeComponent();
+            btnBancoLocal.Visible = false;
+            btnDashboard.Visible = false;
         }
         private void OpenForm<T>() where T : Form, new()
         {

@@ -6,6 +6,7 @@
         public List<string> MesReferencia { get; set; }
         public List<string> Instalacao { get; set; }
         public List<string> Distribuidora { get; set; }
+        public List<string> DescricaoProdutos { get; set; }
         public string IdInstalacao { get; set; }
         public DateTime? DataEmissao { get; set; }
         public string ConsumoTotal { get; set; }

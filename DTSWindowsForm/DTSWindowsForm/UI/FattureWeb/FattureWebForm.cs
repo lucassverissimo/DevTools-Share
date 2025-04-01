@@ -420,6 +420,11 @@ namespace DTSWindowsForm.UI.FattureWeb
                     .ToList();
             }
 
+            if (_filtros.DescricaoProdutos != null && _filtros.DescricaoProdutos.Any())
+            {
+                dadosFiltrados = dadosFiltrados.Where(x => _filtros.DescricaoProdutos.Exists(l => x.Conteudo.Fatura.GetDescricaoProdutos().ToLower().Contains(l.ToLower().Trim()))).ToList();
+            }
+
             return dadosFiltrados;
         }
 
@@ -629,6 +634,9 @@ namespace DTSWindowsForm.UI.FattureWeb
 
                 if (!string.IsNullOrEmpty(txbInstalacao.Text))
                     _filtros.Instalacao = txbInstalacao.Text.Split(';').ToList();
+
+                if (!string.IsNullOrEmpty(txbDescricaoProdutos.Text))
+                    _filtros.DescricaoProdutos = txbDescricaoProdutos.Text.Split(';').ToList();
 
                 PreencherGridFaturas();
             }
