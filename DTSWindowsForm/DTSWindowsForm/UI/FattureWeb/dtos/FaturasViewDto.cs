@@ -1,5 +1,6 @@
 ﻿
 
+
 namespace DTSWindowsForm.UI.FattureWeb.dtos
 {
     public record FaturasViewDto()
@@ -18,5 +19,9 @@ namespace DTSWindowsForm.UI.FattureWeb.dtos
         public string DebitoAutomatico { get; set; }
         public string DescricaoProdutos { get; set; }
         public string DescricoesOriginais { get; set; }
+        public DateTime? DataApresentacao { get; set; }
+        public DateTime? DataInsercaoFW { get; set; }
+        public DateTime? DataProximaLeitura { get; set; }
+        public double? EnquadramentoEnergiaPorcentagem { get; internal set; }
     }
 }

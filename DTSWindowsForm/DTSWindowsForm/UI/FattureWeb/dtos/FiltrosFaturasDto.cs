@@ -8,6 +8,7 @@
         public List<string> Distribuidora { get; set; }
         public List<string> DescricaoProdutos { get; set; }
         public List<string> DescricoesOriginais { get; set; }
+        public List<string> ModelosFw { get; set; }
         public string IdInstalacao { get; set; }
         public DateTime? DataEmissao { get; set; }
         public string ConsumoTotal { get; set; }

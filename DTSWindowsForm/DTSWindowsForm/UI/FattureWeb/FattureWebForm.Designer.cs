@@ -39,8 +39,13 @@
             txtQtdFaturas = new TextBox();
             lblFaturas = new Label();
             panel2 = new Panel();
-            panel6 = new Panel();
-            grbFiltros = new GroupBox();
+            btnFiltros = new Button();
+            btnDownloadCsv = new Button();
+            btnBuscarFaturas = new Button();
+            txtSenha = new TextBox();
+            lblSenha = new Label();
+            txtUsuario = new TextBox();
+            lblUsuario = new Label();
             label6 = new Label();
             txbDescricoesOriginais = new TextBox();
             lblDescricoesOriginais = new Label();
@@ -59,12 +64,6 @@
             btnLimparFiltros = new Button();
             btnFiltrar = new Button();
             lblInstalacao = new Label();
-            btnDownloadCsv = new Button();
-            btnBuscarFaturas = new Button();
-            txtSenha = new TextBox();
-            lblSenha = new Label();
-            txtUsuario = new TextBox();
-            lblUsuario = new Label();
             faturasViewDtoBindingSource1 = new BindingSource(components);
             faturasViewDtoBindingSource = new BindingSource(components);
             conteudoBindingSource = new BindingSource(components);
@@ -72,7 +71,12 @@
             panel7 = new Panel();
             tabControl1 = new TabControl();
             tpgFaturas = new TabPage();
-            panel8 = new Panel();
+            panel9 = new Panel();
+            pnlFiltros = new Panel();
+            label8 = new Label();
+            txbModeloFw = new TextBox();
+            label9 = new Label();
+            panel10 = new Panel();
             tpgCobrancas = new TabPage();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
@@ -80,15 +84,15 @@
             ((System.ComponentModel.ISupportInitialize)gridFaturas).BeginInit();
             panel4.SuspendLayout();
             panel2.SuspendLayout();
-            panel6.SuspendLayout();
-            grbFiltros.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)faturasViewDtoBindingSource1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)faturasViewDtoBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)conteudoBindingSource).BeginInit();
             panel7.SuspendLayout();
             tabControl1.SuspendLayout();
             tpgFaturas.SuspendLayout();
-            panel8.SuspendLayout();
+            panel9.SuspendLayout();
+            pnlFiltros.SuspendLayout();
+            panel10.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -99,16 +103,16 @@
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(843, 645);
+            panel1.Size = new Size(643, 645);
             panel1.TabIndex = 0;
             // 
             // panel5
             // 
             panel5.Controls.Add(panel3);
             panel5.Dock = DockStyle.Fill;
-            panel5.Location = new Point(0, 271);
+            panel5.Location = new Point(0, 55);
             panel5.Name = "panel5";
-            panel5.Size = new Size(843, 338);
+            panel5.Size = new Size(643, 554);
             panel5.TabIndex = 3;
             // 
             // panel3
@@ -118,7 +122,7 @@
             panel3.Dock = DockStyle.Fill;
             panel3.Location = new Point(0, 0);
             panel3.Name = "panel3";
-            panel3.Size = new Size(843, 338);
+            panel3.Size = new Size(643, 554);
             panel3.TabIndex = 1;
             // 
             // gridFaturas
@@ -131,12 +135,14 @@
             gridFaturas.Name = "gridFaturas";
             gridFaturas.RowTemplate.ReadOnly = true;
             gridFaturas.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            gridFaturas.Size = new Size(843, 338);
+            gridFaturas.Size = new Size(643, 554);
             gridFaturas.TabIndex = 0;
             gridFaturas.DataSourceChanged += gridFaturas_DataSourceChanged;
             // 
             // panel4
             // 
+            panel4.Controls.Add(btnDownloadCsv);
+            panel4.Controls.Add(btnFiltros);
             panel4.Controls.Add(txtQtdFaturasFiltradas);
             panel4.Controls.Add(label1);
             panel4.Controls.Add(txtQtdFaturas);
@@ -144,7 +150,7 @@
             panel4.Dock = DockStyle.Bottom;
             panel4.Location = new Point(0, 609);
             panel4.Name = "panel4";
-            panel4.Size = new Size(843, 36);
+            panel4.Size = new Size(643, 36);
             panel4.TabIndex = 2;
             // 
             // txtQtdFaturasFiltradas
@@ -185,7 +191,7 @@
             // 
             // panel2
             // 
-            panel2.Controls.Add(panel6);
+            panel2.BorderStyle = BorderStyle.Fixed3D;
             panel2.Controls.Add(btnBuscarFaturas);
             panel2.Controls.Add(txtSenha);
             panel2.Controls.Add(lblSenha);
@@ -194,217 +200,19 @@
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(0, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(843, 271);
+            panel2.Size = new Size(643, 55);
             panel2.TabIndex = 0;
             // 
-            // panel6
+            // btnFiltros
             // 
-            panel6.AutoScroll = true;
-            panel6.Controls.Add(grbFiltros);
-            panel6.Dock = DockStyle.Bottom;
-            panel6.Location = new Point(0, 52);
-            panel6.Name = "panel6";
-            panel6.Size = new Size(843, 219);
-            panel6.TabIndex = 13;
-            // 
-            // grbFiltros
-            // 
-            grbFiltros.Controls.Add(label6);
-            grbFiltros.Controls.Add(txbDescricoesOriginais);
-            grbFiltros.Controls.Add(lblDescricoesOriginais);
-            grbFiltros.Controls.Add(label2);
-            grbFiltros.Controls.Add(txbDescricaoProdutos);
-            grbFiltros.Controls.Add(lblDescricaoProdutos);
-            grbFiltros.Controls.Add(label4);
-            grbFiltros.Controls.Add(txbInstalacao);
-            grbFiltros.Controls.Add(label3);
-            grbFiltros.Controls.Add(label5);
-            grbFiltros.Controls.Add(lblMesRef);
-            grbFiltros.Controls.Add(txbMesRef);
-            grbFiltros.Controls.Add(lblDistribuidora);
-            grbFiltros.Controls.Add(txbDistribuidora);
-            grbFiltros.Controls.Add(chbFaturasDuplicadas);
-            grbFiltros.Controls.Add(btnLimparFiltros);
-            grbFiltros.Controls.Add(btnFiltrar);
-            grbFiltros.Controls.Add(lblInstalacao);
-            grbFiltros.Controls.Add(btnDownloadCsv);
-            grbFiltros.Dock = DockStyle.Fill;
-            grbFiltros.ForeColor = SystemColors.ActiveCaptionText;
-            grbFiltros.Location = new Point(0, 0);
-            grbFiltros.Name = "grbFiltros";
-            grbFiltros.Size = new Size(843, 219);
-            grbFiltros.TabIndex = 7;
-            grbFiltros.TabStop = false;
-            grbFiltros.Text = "Filtros";
-            // 
-            // label6
-            // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 7F);
-            label6.ForeColor = SystemColors.ControlDarkDark;
-            label6.Location = new Point(537, 170);
-            label6.Name = "label6";
-            label6.Size = new Size(72, 12);
-            label6.TabIndex = 30;
-            label6.Text = "separado por ';'";
-            // 
-            // txbDescricoesOriginais
-            // 
-            txbDescricoesOriginais.Location = new Point(8, 144);
-            txbDescricoesOriginais.Name = "txbDescricoesOriginais";
-            txbDescricoesOriginais.Size = new Size(601, 23);
-            txbDescricoesOriginais.TabIndex = 29;
-            // 
-            // lblDescricoesOriginais
-            // 
-            lblDescricoesOriginais.AutoSize = true;
-            lblDescricoesOriginais.Location = new Point(8, 125);
-            lblDescricoesOriginais.Name = "lblDescricoesOriginais";
-            lblDescricoesOriginais.Size = new Size(113, 15);
-            lblDescricoesOriginais.TabIndex = 28;
-            lblDescricoesOriginais.Text = "Descrições Originais";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 7F);
-            label2.ForeColor = SystemColors.ControlDarkDark;
-            label2.Location = new Point(537, 119);
-            label2.Name = "label2";
-            label2.Size = new Size(72, 12);
-            label2.TabIndex = 27;
-            label2.Text = "separado por ';'";
-            // 
-            // txbDescricaoProdutos
-            // 
-            txbDescricaoProdutos.Location = new Point(8, 93);
-            txbDescricaoProdutos.Name = "txbDescricaoProdutos";
-            txbDescricaoProdutos.Size = new Size(601, 23);
-            txbDescricaoProdutos.TabIndex = 26;
-            // 
-            // lblDescricaoProdutos
-            // 
-            lblDescricaoProdutos.AutoSize = true;
-            lblDescricaoProdutos.Location = new Point(8, 74);
-            lblDescricaoProdutos.Name = "lblDescricaoProdutos";
-            lblDescricaoProdutos.Size = new Size(109, 15);
-            lblDescricaoProdutos.TabIndex = 25;
-            lblDescricaoProdutos.Text = "Descrição Produtos";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 7F);
-            label4.ForeColor = SystemColors.ControlDarkDark;
-            label4.Location = new Point(84, 59);
-            label4.Name = "label4";
-            label4.Size = new Size(72, 12);
-            label4.TabIndex = 24;
-            label4.Text = "separado por ';'";
-            // 
-            // txbInstalacao
-            // 
-            txbInstalacao.Location = new Point(8, 33);
-            txbInstalacao.Name = "txbInstalacao";
-            txbInstalacao.Size = new Size(148, 23);
-            txbInstalacao.TabIndex = 23;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Segoe UI", 7F);
-            label3.ForeColor = SystemColors.ControlDarkDark;
-            label3.Location = new Point(244, 59);
-            label3.Name = "label3";
-            label3.Size = new Size(72, 12);
-            label3.TabIndex = 22;
-            label3.Text = "separado por ';'";
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 7F);
-            label5.ForeColor = SystemColors.ControlDarkDark;
-            label5.Location = new Point(407, 59);
-            label5.Name = "label5";
-            label5.Size = new Size(72, 12);
-            label5.TabIndex = 21;
-            label5.Text = "separado por ';'";
-            // 
-            // lblMesRef
-            // 
-            lblMesRef.AutoSize = true;
-            lblMesRef.Location = new Point(331, 14);
-            lblMesRef.Name = "lblMesRef";
-            lblMesRef.Size = new Size(100, 15);
-            lblMesRef.TabIndex = 17;
-            lblMesRef.Text = "Mês de referência";
-            // 
-            // txbMesRef
-            // 
-            txbMesRef.Location = new Point(331, 33);
-            txbMesRef.Name = "txbMesRef";
-            txbMesRef.Size = new Size(148, 23);
-            txbMesRef.TabIndex = 16;
-            // 
-            // lblDistribuidora
-            // 
-            lblDistribuidora.AutoSize = true;
-            lblDistribuidora.Location = new Point(168, 14);
-            lblDistribuidora.Name = "lblDistribuidora";
-            lblDistribuidora.Size = new Size(75, 15);
-            lblDistribuidora.TabIndex = 15;
-            lblDistribuidora.Text = "Distribuidora";
-            // 
-            // txbDistribuidora
-            // 
-            txbDistribuidora.Location = new Point(168, 33);
-            txbDistribuidora.Name = "txbDistribuidora";
-            txbDistribuidora.Size = new Size(148, 23);
-            txbDistribuidora.TabIndex = 14;
-            // 
-            // chbFaturasDuplicadas
-            // 
-            chbFaturasDuplicadas.AutoSize = true;
-            chbFaturasDuplicadas.Location = new Point(485, 35);
-            chbFaturasDuplicadas.Name = "chbFaturasDuplicadas";
-            chbFaturasDuplicadas.Size = new Size(124, 19);
-            chbFaturasDuplicadas.TabIndex = 7;
-            chbFaturasDuplicadas.Text = "Faturas duplicadas";
-            chbFaturasDuplicadas.UseVisualStyleBackColor = true;
-            // 
-            // btnLimparFiltros
-            // 
-            btnLimparFiltros.BackColor = Color.PaleGoldenrod;
-            btnLimparFiltros.FlatStyle = FlatStyle.Popup;
-            btnLimparFiltros.Location = new Point(109, 187);
-            btnLimparFiltros.Name = "btnLimparFiltros";
-            btnLimparFiltros.Size = new Size(95, 25);
-            btnLimparFiltros.TabIndex = 4;
-            btnLimparFiltros.Text = "Limpar Filtros";
-            btnLimparFiltros.UseVisualStyleBackColor = false;
-            btnLimparFiltros.Click += btnLimparFiltros_Click;
-            // 
-            // btnFiltrar
-            // 
-            btnFiltrar.BackColor = Color.GreenYellow;
-            btnFiltrar.FlatStyle = FlatStyle.Popup;
-            btnFiltrar.Location = new Point(8, 187);
-            btnFiltrar.Name = "btnFiltrar";
-            btnFiltrar.Size = new Size(95, 25);
-            btnFiltrar.TabIndex = 2;
-            btnFiltrar.Text = "Aplicar Filtros";
-            btnFiltrar.UseVisualStyleBackColor = false;
-            btnFiltrar.Click += btnFiltrar_Click;
-            // 
-            // lblInstalacao
-            // 
-            lblInstalacao.AutoSize = true;
-            lblInstalacao.Location = new Point(8, 14);
-            lblInstalacao.Name = "lblInstalacao";
-            lblInstalacao.Size = new Size(60, 15);
-            lblInstalacao.TabIndex = 1;
-            lblInstalacao.Text = "Instalação";
+            btnFiltros.Dock = DockStyle.Right;
+            btnFiltros.Location = new Point(568, 0);
+            btnFiltros.Name = "btnFiltros";
+            btnFiltros.Size = new Size(75, 36);
+            btnFiltros.TabIndex = 1;
+            btnFiltros.Text = "Filtros >>";
+            btnFiltros.UseVisualStyleBackColor = true;
+            btnFiltros.Click += btnFiltros_Click;
             // 
             // btnDownloadCsv
             // 
@@ -412,9 +220,9 @@
             btnDownloadCsv.FlatStyle = FlatStyle.Popup;
             btnDownloadCsv.Font = new Font("Segoe UI", 9F);
             btnDownloadCsv.ForeColor = SystemColors.ControlText;
-            btnDownloadCsv.Location = new Point(210, 187);
+            btnDownloadCsv.Location = new Point(276, 5);
             btnDownloadCsv.Name = "btnDownloadCsv";
-            btnDownloadCsv.Size = new Size(95, 25);
+            btnDownloadCsv.Size = new Size(95, 24);
             btnDownloadCsv.TabIndex = 6;
             btnDownloadCsv.Text = "🔼 Exportar";
             btnDownloadCsv.UseVisualStyleBackColor = false;
@@ -467,6 +275,177 @@
             lblUsuario.TabIndex = 8;
             lblUsuario.Text = "Email";
             // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 7F);
+            label6.ForeColor = SystemColors.ControlDarkDark;
+            label6.Location = new Point(108, 293);
+            label6.Name = "label6";
+            label6.Size = new Size(72, 12);
+            label6.TabIndex = 30;
+            label6.Text = "separado por ';'";
+            // 
+            // txbDescricoesOriginais
+            // 
+            txbDescricoesOriginais.Location = new Point(6, 267);
+            txbDescricoesOriginais.Name = "txbDescricoesOriginais";
+            txbDescricoesOriginais.Size = new Size(189, 23);
+            txbDescricoesOriginais.TabIndex = 29;
+            // 
+            // lblDescricoesOriginais
+            // 
+            lblDescricoesOriginais.AutoSize = true;
+            lblDescricoesOriginais.Location = new Point(6, 248);
+            lblDescricoesOriginais.Name = "lblDescricoesOriginais";
+            lblDescricoesOriginais.Size = new Size(113, 15);
+            lblDescricoesOriginais.TabIndex = 28;
+            lblDescricoesOriginais.Text = "Descrições Originais";
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 7F);
+            label2.ForeColor = SystemColors.ControlDarkDark;
+            label2.Location = new Point(108, 233);
+            label2.Name = "label2";
+            label2.Size = new Size(72, 12);
+            label2.TabIndex = 27;
+            label2.Text = "separado por ';'";
+            // 
+            // txbDescricaoProdutos
+            // 
+            txbDescricaoProdutos.Location = new Point(6, 207);
+            txbDescricaoProdutos.Name = "txbDescricaoProdutos";
+            txbDescricaoProdutos.Size = new Size(189, 23);
+            txbDescricaoProdutos.TabIndex = 26;
+            // 
+            // lblDescricaoProdutos
+            // 
+            lblDescricaoProdutos.AutoSize = true;
+            lblDescricaoProdutos.Location = new Point(6, 188);
+            lblDescricaoProdutos.Name = "lblDescricaoProdutos";
+            lblDescricaoProdutos.Size = new Size(109, 15);
+            lblDescricaoProdutos.TabIndex = 25;
+            lblDescricaoProdutos.Text = "Descrição Produtos";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 7F);
+            label4.ForeColor = SystemColors.ControlDarkDark;
+            label4.Location = new Point(108, 51);
+            label4.Name = "label4";
+            label4.Size = new Size(72, 12);
+            label4.TabIndex = 24;
+            label4.Text = "separado por ';'";
+            // 
+            // txbInstalacao
+            // 
+            txbInstalacao.Location = new Point(6, 25);
+            txbInstalacao.Name = "txbInstalacao";
+            txbInstalacao.Size = new Size(189, 23);
+            txbInstalacao.TabIndex = 23;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 7F);
+            label3.ForeColor = SystemColors.ControlDarkDark;
+            label3.Location = new Point(108, 111);
+            label3.Name = "label3";
+            label3.Size = new Size(72, 12);
+            label3.TabIndex = 22;
+            label3.Text = "separado por ';'";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 7F);
+            label5.ForeColor = SystemColors.ControlDarkDark;
+            label5.Location = new Point(108, 170);
+            label5.Name = "label5";
+            label5.Size = new Size(72, 12);
+            label5.TabIndex = 21;
+            label5.Text = "separado por ';'";
+            // 
+            // lblMesRef
+            // 
+            lblMesRef.AutoSize = true;
+            lblMesRef.Location = new Point(6, 125);
+            lblMesRef.Name = "lblMesRef";
+            lblMesRef.Size = new Size(100, 15);
+            lblMesRef.TabIndex = 17;
+            lblMesRef.Text = "Mês de referência";
+            // 
+            // txbMesRef
+            // 
+            txbMesRef.Location = new Point(6, 144);
+            txbMesRef.Name = "txbMesRef";
+            txbMesRef.Size = new Size(189, 23);
+            txbMesRef.TabIndex = 16;
+            // 
+            // lblDistribuidora
+            // 
+            lblDistribuidora.AutoSize = true;
+            lblDistribuidora.Location = new Point(6, 66);
+            lblDistribuidora.Name = "lblDistribuidora";
+            lblDistribuidora.Size = new Size(75, 15);
+            lblDistribuidora.TabIndex = 15;
+            lblDistribuidora.Text = "Distribuidora";
+            // 
+            // txbDistribuidora
+            // 
+            txbDistribuidora.Location = new Point(6, 85);
+            txbDistribuidora.Name = "txbDistribuidora";
+            txbDistribuidora.Size = new Size(189, 23);
+            txbDistribuidora.TabIndex = 14;
+            // 
+            // chbFaturasDuplicadas
+            // 
+            chbFaturasDuplicadas.AutoSize = true;
+            chbFaturasDuplicadas.Location = new Point(6, 376);
+            chbFaturasDuplicadas.Name = "chbFaturasDuplicadas";
+            chbFaturasDuplicadas.Size = new Size(124, 19);
+            chbFaturasDuplicadas.TabIndex = 7;
+            chbFaturasDuplicadas.Text = "Faturas duplicadas";
+            chbFaturasDuplicadas.UseVisualStyleBackColor = true;
+            // 
+            // btnLimparFiltros
+            // 
+            btnLimparFiltros.BackColor = Color.PaleGoldenrod;
+            btnLimparFiltros.Dock = DockStyle.Right;
+            btnLimparFiltros.FlatStyle = FlatStyle.Popup;
+            btnLimparFiltros.Location = new Point(6, 0);
+            btnLimparFiltros.Name = "btnLimparFiltros";
+            btnLimparFiltros.Size = new Size(95, 29);
+            btnLimparFiltros.TabIndex = 4;
+            btnLimparFiltros.Text = "Limpar Filtros";
+            btnLimparFiltros.UseVisualStyleBackColor = false;
+            btnLimparFiltros.Click += btnLimparFiltros_Click;
+            // 
+            // btnFiltrar
+            // 
+            btnFiltrar.BackColor = Color.GreenYellow;
+            btnFiltrar.Dock = DockStyle.Right;
+            btnFiltrar.FlatStyle = FlatStyle.Popup;
+            btnFiltrar.Location = new Point(101, 0);
+            btnFiltrar.Name = "btnFiltrar";
+            btnFiltrar.Size = new Size(95, 29);
+            btnFiltrar.TabIndex = 2;
+            btnFiltrar.Text = "Aplicar Filtros";
+            btnFiltrar.UseVisualStyleBackColor = false;
+            btnFiltrar.Click += btnFiltrar_Click;
+            // 
+            // lblInstalacao
+            // 
+            lblInstalacao.AutoSize = true;
+            lblInstalacao.Location = new Point(6, 6);
+            lblInstalacao.Name = "lblInstalacao";
+            lblInstalacao.Size = new Size(60, 15);
+            lblInstalacao.TabIndex = 1;
+            lblInstalacao.Text = "Instalação";
+            // 
             // bcwCarregaDados
             // 
             bcwCarregaDados.DoWork += bcwCarregaDados_DoWork;
@@ -487,6 +466,7 @@
             tabControl1.Controls.Add(tpgCobrancas);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 0);
+            tabControl1.Multiline = true;
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(857, 679);
@@ -494,7 +474,8 @@
             // 
             // tpgFaturas
             // 
-            tpgFaturas.Controls.Add(panel8);
+            tpgFaturas.Controls.Add(panel9);
+            tpgFaturas.Controls.Add(pnlFiltros);
             tpgFaturas.Location = new Point(4, 24);
             tpgFaturas.Name = "tpgFaturas";
             tpgFaturas.Padding = new Padding(3);
@@ -503,14 +484,81 @@
             tpgFaturas.Text = "Faturas";
             tpgFaturas.UseVisualStyleBackColor = true;
             // 
-            // panel8
+            // panel9
             // 
-            panel8.Controls.Add(panel1);
-            panel8.Dock = DockStyle.Fill;
-            panel8.Location = new Point(3, 3);
-            panel8.Name = "panel8";
-            panel8.Size = new Size(843, 645);
-            panel8.TabIndex = 0;
+            panel9.Controls.Add(panel1);
+            panel9.Dock = DockStyle.Fill;
+            panel9.Location = new Point(3, 3);
+            panel9.Name = "panel9";
+            panel9.Size = new Size(643, 645);
+            panel9.TabIndex = 2;
+            // 
+            // pnlFiltros
+            // 
+            pnlFiltros.BackColor = Color.Transparent;
+            pnlFiltros.BorderStyle = BorderStyle.Fixed3D;
+            pnlFiltros.Controls.Add(label8);
+            pnlFiltros.Controls.Add(txbModeloFw);
+            pnlFiltros.Controls.Add(label9);
+            pnlFiltros.Controls.Add(chbFaturasDuplicadas);
+            pnlFiltros.Controls.Add(panel10);
+            pnlFiltros.Controls.Add(label6);
+            pnlFiltros.Controls.Add(txbDescricoesOriginais);
+            pnlFiltros.Controls.Add(lblInstalacao);
+            pnlFiltros.Controls.Add(lblDescricoesOriginais);
+            pnlFiltros.Controls.Add(txbInstalacao);
+            pnlFiltros.Controls.Add(label2);
+            pnlFiltros.Controls.Add(label4);
+            pnlFiltros.Controls.Add(txbDistribuidora);
+            pnlFiltros.Controls.Add(lblDistribuidora);
+            pnlFiltros.Controls.Add(txbDescricaoProdutos);
+            pnlFiltros.Controls.Add(lblDescricaoProdutos);
+            pnlFiltros.Controls.Add(label5);
+            pnlFiltros.Controls.Add(label3);
+            pnlFiltros.Controls.Add(lblMesRef);
+            pnlFiltros.Controls.Add(txbMesRef);
+            pnlFiltros.Dock = DockStyle.Right;
+            pnlFiltros.Location = new Point(646, 3);
+            pnlFiltros.Name = "pnlFiltros";
+            pnlFiltros.Size = new Size(200, 645);
+            pnlFiltros.TabIndex = 1;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Font = new Font("Segoe UI", 7F);
+            label8.ForeColor = SystemColors.ControlDarkDark;
+            label8.Location = new Point(108, 350);
+            label8.Name = "label8";
+            label8.Size = new Size(72, 12);
+            label8.TabIndex = 35;
+            label8.Text = "separado por ';'";
+            // 
+            // txbModeloFw
+            // 
+            txbModeloFw.Location = new Point(6, 324);
+            txbModeloFw.Name = "txbModeloFw";
+            txbModeloFw.Size = new Size(189, 23);
+            txbModeloFw.TabIndex = 34;
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(6, 305);
+            label9.Name = "label9";
+            label9.Size = new Size(112, 15);
+            label9.TabIndex = 33;
+            label9.Text = "Modelo FattureWeb";
+            // 
+            // panel10
+            // 
+            panel10.Controls.Add(btnLimparFiltros);
+            panel10.Controls.Add(btnFiltrar);
+            panel10.Dock = DockStyle.Bottom;
+            panel10.Location = new Point(0, 612);
+            panel10.Name = "panel10";
+            panel10.Size = new Size(196, 29);
+            panel10.TabIndex = 32;
             // 
             // tpgCobrancas
             // 
@@ -541,16 +589,16 @@
             panel4.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
-            panel6.ResumeLayout(false);
-            grbFiltros.ResumeLayout(false);
-            grbFiltros.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)faturasViewDtoBindingSource1).EndInit();
             ((System.ComponentModel.ISupportInitialize)faturasViewDtoBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)conteudoBindingSource).EndInit();
             panel7.ResumeLayout(false);
             tabControl1.ResumeLayout(false);
             tpgFaturas.ResumeLayout(false);
-            panel8.ResumeLayout(false);
+            panel9.ResumeLayout(false);
+            pnlFiltros.ResumeLayout(false);
+            pnlFiltros.PerformLayout();
+            panel10.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -574,7 +622,6 @@
         private BindingSource faturasViewDtoBindingSource;
         private Panel panel4;
         private Panel panel5;
-        private GroupBox grbFiltros;
         private Button btnFiltrar;
         private Label lblInstalacao;
         private TextBox txtFiltroInstalacao;
@@ -584,11 +631,9 @@
         private Label lblSenha;
         private TextBox txtUsuario;
         private Button btnBuscarFaturas;
-        private Panel panel6;
         private Panel panel7;
         private TabControl tabControl1;
         private TabPage tpgFaturas;
-        private Panel panel8;
         private TabPage tpgCobrancas;
         private Button btnLimparFiltros;
         private TextBox txtQtdFaturasFiltradas;
@@ -608,5 +653,12 @@
         private Label label6;
         private TextBox txbDescricoesOriginais;
         private Label lblDescricoesOriginais;
+        private Panel panel9;
+        private Panel pnlFiltros;
+        private Panel panel10;
+        private Label label8;
+        private TextBox txbModeloFw;
+        private Label label9;
+        private Button btnFiltros;
     }
 }

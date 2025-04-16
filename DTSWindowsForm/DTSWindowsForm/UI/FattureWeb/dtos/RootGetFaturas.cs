@@ -107,6 +107,8 @@ public record Dado(
     [property: JsonProperty("data_processamento")]
     [property: JsonPropertyName("data_processamento")]
         DateTime? DataProcessamento,
+    [property: JsonPropertyName("data_insercao")]
+        DateTime? DataInsercao,
     [property: JsonProperty("erro_processamento")]
     [property: JsonPropertyName("erro_processamento")]
         string ErroProcessamento,

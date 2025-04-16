@@ -299,6 +299,9 @@ namespace DTSWindowsForm.UI.FattureWeb
                 fatura.ConsumoTotal = consumoTotal.ToString();
                 fatura.DataEmissao = dado.Conteudo.Fatura.DataEmissao;
                 fatura.DataProcessamento = dado.DataProcessamento.ToString();
+                fatura.DataApresentacao = Convert.ToDateTime(dado.Conteudo?.Fatura?.DataApresentacao);
+                fatura.DataInsercaoFW = Convert.ToDateTime(dado.Conteudo?.DataInsercao);
+                fatura.DataProximaLeitura = Convert.ToDateTime(dado.Conteudo?.Fatura?.Leitura?.DataProxima);
                 ObtemDadosFatura(fatura, dado);
                 faturas.Add(fatura);
             }
@@ -366,6 +369,10 @@ namespace DTSWindowsForm.UI.FattureWeb
                 fatura.DebitoAutomatico = contentFatura.Outros.DebitoAutomatico.Value ? "Sim" : "Não";
             }
 
+            if (produtoEnergiaInjetadaTUSDKwh != null && produtoConsumoTUSDKwh != null && (produtoConsumoTUSDKwh.TarifaSemImpostos ?? 0) != 0)
+            {
+                fatura.EnquadramentoEnergiaPorcentagem = double.Abs(((produtoEnergiaInjetadaTUSDKwh.TarifaComImpostos ?? 0) / produtoConsumoTUSDKwh.TarifaSemImpostos.Value)) * 100;
+            }
             fatura.ValorMuc = contentFatura.Fatura.GetValorMuc();
         }
 
@@ -428,7 +435,16 @@ namespace DTSWindowsForm.UI.FattureWeb
 
             if (_filtros.DescricoesOriginais != null && _filtros.DescricoesOriginais.Any())
             {
-                dadosFiltrados = dadosFiltrados.Where(x => _filtros.DescricoesOriginais.Exists(l => x.Conteudo.Fatura.GetDescricoesOriginaisProdutos().ToLower().Contains(l.ToLower().Trim()))).ToList();
+                dadosFiltrados = dadosFiltrados.Where(x => _filtros.DescricoesOriginais.Exists(l =>
+                                                                                                x.Conteudo.Fatura
+                                                                                                .GetDescricoesOriginaisProdutos()
+                                                                                                .ToLower()
+                                                                                                .Contains(l.ToLower().Trim()))).ToList();
+            }
+
+            if (_filtros.ModelosFw != null && _filtros.ModelosFw.Any())
+            {
+                dadosFiltrados = dadosFiltrados.Where(x => _filtros.ModelosFw.Any(m => m == x.Conteudo.ModeloFatura)).ToList();
             }
 
             return dadosFiltrados;
@@ -612,9 +628,15 @@ namespace DTSWindowsForm.UI.FattureWeb
         {
             try
             {
-                StartLoading();
-                gridFaturas.ExportToXls("faturas", Program.OutputDir);
-
+                if (_dadosFiltrados.Count > 0)
+                {
+                    StartLoading();
+                    gridFaturas.ExportToXls("faturas", Program.OutputDir);
+                }
+                else
+                {
+                    MessageBox.Show("Não há dados para serem exportados.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
             }
             catch (Exception ex)
             {
@@ -646,6 +668,9 @@ namespace DTSWindowsForm.UI.FattureWeb
 
                 if (!string.IsNullOrEmpty(txbDescricoesOriginais.Text))
                     _filtros.DescricoesOriginais = txbDescricoesOriginais.Text.Split(';').ToList();
+
+                if (!string.IsNullOrEmpty(txbModeloFw.Text))
+                    _filtros.ModelosFw = txbModeloFw.Text.Split(';').ToList();
 
                 PreencherGridFaturas();
             }
@@ -679,6 +704,10 @@ namespace DTSWindowsForm.UI.FattureWeb
             _filtros = new FiltrosFaturasDto();
             chbFaturasDuplicadas.Checked = false;
             txbDistribuidora.Text = string.Empty;
+            txbDescricaoProdutos.Text = string.Empty;
+            txbDescricoesOriginais.Text = string.Empty;
+            txbInstalacao.Text = string.Empty;
+            txbMesRef.Text = string.Empty;
 
             PreencherGridFaturas();
         }
@@ -692,6 +721,21 @@ namespace DTSWindowsForm.UI.FattureWeb
         {
             txtQtdFaturas.Text = _dados.Count.ToString();
             txtQtdFaturasFiltradas.Text = _dadosFiltrados.Count().ToString();
+        }
+
+        private void btnFiltros_Click(object sender, EventArgs e)
+        {
+            if (btnFiltros.Text.Contains(">>"))
+            {
+                btnFiltros.Text = "Filtros <<";
+                pnlFiltros.Visible = false;
+            }
+            else
+            {
+                btnFiltros.Text = "Filtros >>";
+                pnlFiltros.Visible = true;
+            }
+
         }
     }
 }
