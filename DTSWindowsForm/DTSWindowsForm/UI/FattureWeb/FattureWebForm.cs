@@ -18,6 +18,7 @@ namespace DTSWindowsForm.UI.FattureWeb
         private FiltrosFaturasDto _filtros = new FiltrosFaturasDto();
         private LoadingControl _loadingControl;
         private List<Dado> _dadosFiltrados = new List<Dado>();
+        private bool _gravarLog = false;
         private readonly string URL_FATTUREWEB = "https://api.fattureweb.com.br/";
 
         public FattureWebForm()
@@ -84,6 +85,19 @@ namespace DTSWindowsForm.UI.FattureWeb
                     else if (e.ColumnIndex == gridFaturas.Columns["VisualizarJson"].Index)
                         BaixarJson(item);
                 }
+            };
+
+            btnBuscarFaturas.MouseUp += (sender, e) =>
+            {
+                if (e.Button == MouseButtons.Right)
+                {
+                    cmsLog.Show(btnBuscarFaturas, e.Location);
+                }
+            };
+
+            checkLog.Click += (sender, e) =>
+            {
+                _gravarLog = checkLog.Checked;
             };
         }
 
@@ -514,13 +528,6 @@ namespace DTSWindowsForm.UI.FattureWeb
 
             List<(int, string)> logEntries = new List<(int, string)>();
 
-            string logFilePath = Path.Combine("logs", $"log{DateTime.Now:yyyyMMdd_HHmmss}.txt");
-
-            if (!Directory.Exists("logs"))
-            {
-                Directory.CreateDirectory("logs");
-            }
-
             Stopwatch totalStopwatch = Stopwatch.StartNew();
 
             logEntries.Add((0, $"Início do processo {DateTime.Now}"));
@@ -593,11 +600,20 @@ namespace DTSWindowsForm.UI.FattureWeb
 
             var sortedLogs = logEntries.OrderBy(entry => entry.Item1).ToList();
 
-            using (StreamWriter logFile = new StreamWriter(logFilePath, true))
+            if (_gravarLog)
             {
-                foreach (var log in sortedLogs)
+                string logFilePath = Path.Combine("logs", $"log{DateTime.Now:yyyyMMdd_HHmmss}.txt");
+
+                if (!Directory.Exists("logs"))
                 {
-                    logFile.WriteLine(log.Item2);
+                    Directory.CreateDirectory("logs");
+                }
+                using (StreamWriter logFile = new StreamWriter(logFilePath, true))
+                {
+                    foreach (var log in sortedLogs)
+                    {
+                        logFile.WriteLine(log.Item2);
+                    }
                 }
             }
 

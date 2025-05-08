@@ -78,6 +78,8 @@
             label9 = new Label();
             panel10 = new Panel();
             tpgCobrancas = new TabPage();
+            cmsLog = new ContextMenuStrip(components);
+            checkLog = new ToolStripMenuItem();
             panel1.SuspendLayout();
             panel5.SuspendLayout();
             panel3.SuspendLayout();
@@ -93,6 +95,7 @@
             panel9.SuspendLayout();
             pnlFiltros.SuspendLayout();
             panel10.SuspendLayout();
+            cmsLog.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -570,6 +573,19 @@
             tpgCobrancas.Text = "Cobrancas";
             tpgCobrancas.UseVisualStyleBackColor = true;
             // 
+            // cmsLog
+            // 
+            cmsLog.Items.AddRange(new ToolStripItem[] { checkLog });
+            cmsLog.Name = "cmsLog";
+            cmsLog.Size = new Size(181, 48);
+            // 
+            // checkLog
+            // 
+            checkLog.CheckOnClick = true;
+            checkLog.Name = "checkLog";
+            checkLog.Size = new Size(180, 22);
+            checkLog.Text = "Gravar Log";
+            // 
             // FattureWebForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -599,6 +615,7 @@
             pnlFiltros.ResumeLayout(false);
             pnlFiltros.PerformLayout();
             panel10.ResumeLayout(false);
+            cmsLog.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -660,5 +677,7 @@
         private TextBox txbModeloFw;
         private Label label9;
         private Button btnFiltros;
+        private ContextMenuStrip cmsLog;
+        private ToolStripMenuItem checkLog;
     }
 }
