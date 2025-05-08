@@ -3,6 +3,7 @@ using DTSWindowsForm.UI.FattureWeb.dtos;
 using DTSWindowsForm.UI.UserControls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 
 namespace DTSWindowsForm.UI.FattureWeb
@@ -453,10 +454,13 @@ namespace DTSWindowsForm.UI.FattureWeb
         public void CarregarDados()
         {
             _token = realizarLogin();
-            var objeto = GetFaturasPaginadoAsync();
-            if (objeto != null)
+            if (!string.IsNullOrEmpty(_token))
             {
-                _dados = objeto.Dados.ToList();
+                var objeto = GetFaturasPaginadoWithLogAsync();
+                if (objeto != null)
+                {
+                    _dados = objeto.Dados.ToList();
+                }
             }
         }
 
@@ -498,89 +502,102 @@ namespace DTSWindowsForm.UI.FattureWeb
             }
         }
 
-        //public Root? GetFaturasPaginadoAsync()
-        //{
-        //    Root retorno = new Root("", "", new List<Dado>());
-
-        //    var clientFaturas = new HttpClient();
-        //    clientFaturas.Timeout = Timeout.InfiniteTimeSpan;
-        //    const int tamanhoMaximoPagina = 1000;
-        //    int limit = tamanhoMaximoPagina;
-        //    int skip = 0;
-        //    bool hasMoreData = true;
-
-        //    while (hasMoreData)
-        //    {
-        //        try
-        //        {
-        //            string url = $"https://api.fattureweb.com.br/faturas?limit={limit}&skip={skip}";
-        //            var requestFaturas = new HttpRequestMessage(HttpMethod.Get, url);
-        //            requestFaturas.Headers.Add("Fatture-AuthToken", _token);
-        //            requestFaturas.Headers.Add(
-        //                "Fatture-SearchFields",
-        //                "id, instalacao_id, arquivo_id, status_fatura_id, status, data_criacao, data_atualizacao, processamento_id, usuario_id, email_fatura_id, data_processamento, erro_processamento, mes_referencia, data_vencimento, valor_total, conteudo"
-        //            );
-
-        //            var responseFaturas = clientFaturas.Send(requestFaturas);
-        //            responseFaturas.EnsureSuccessStatusCode();
-
-        //            var contentResponseFaturas = responseFaturas.Content.ReadAsStringAsync().Result;
-        //            var retornoFw = JsonConvert.DeserializeObject<Root>(contentResponseFaturas);
-
-        //            if (retornoFw != null && retornoFw.Dados.Any())
-        //            {
-        //                retorno.Dados.AddRange(retornoFw.Dados);
-        //                skip += limit;
-        //                if (retornoFw.Dados.Count < tamanhoMaximoPagina)
-        //                {
-        //                    hasMoreData = false;
-        //                }
-        //            }
-        //            else
-        //            {
-        //                hasMoreData = false;
-        //            }
-        //        }
-        //        catch
-        //        {
-        //            hasMoreData = false;
-        //        }
-        //    }
-
-        //    return retorno;
-        //}
-        public Root? GetFaturasPaginadoAsync()
+        public Root? GetFaturasPaginadoWithLogAsync()
         {
             Root retorno = new Root("", "", new List<Dado>());
             const int tamanhoMaximoPagina = 1000;
-            int limit = tamanhoMaximoPagina;
             int skip = 0;
-            bool hasMoreData = true;
+            bool continuar = true;
+            object locker = new object();
 
-            while (hasMoreData)
+            List<Task> tasks = new List<Task>();
+
+            List<(int, string)> logEntries = new List<(int, string)>();
+
+            string logFilePath = Path.Combine("logs", $"log{DateTime.Now:yyyyMMdd_HHmmss}.txt");
+
+            if (!Directory.Exists("logs"))
             {
-                try
-                {
-                    string contentResponseFaturas = GetJsonFaturas(limit, skip);
-                    var retornoFw = JsonConvert.DeserializeObject<Root>(contentResponseFaturas);
+                Directory.CreateDirectory("logs");
+            }
 
-                    if (retornoFw != null && retornoFw.Dados.Any())
+            Stopwatch totalStopwatch = Stopwatch.StartNew();
+
+            logEntries.Add((0, $"Início do processo {DateTime.Now}"));
+
+            while (continuar)
+            {
+                var localSkip = skip;
+                skip += tamanhoMaximoPagina;
+
+                Task task = Task.Run(() =>
+                {
+                    Stopwatch taskStopwatch = Stopwatch.StartNew();
+
+                    try
                     {
-                        retorno.Dados.AddRange(retornoFw.Dados);
-                        skip += limit;
-                        if (retornoFw.Dados.Count < tamanhoMaximoPagina)
+                        string content = GetJsonFaturas(tamanhoMaximoPagina, localSkip);
+                        var result = JsonConvert.DeserializeObject<Root>(content);
+
+                        lock (locker)
                         {
-                            hasMoreData = false;
+                            logEntries.Add((
+                                localSkip / tamanhoMaximoPagina + 1,
+                                $"Requisição {localSkip / tamanhoMaximoPagina + 1} - Página: {localSkip / tamanhoMaximoPagina + 1} - Tempo: {taskStopwatch.ElapsedMilliseconds / 1000.0:F2}s - Sucesso"
+                            ));
+                        }
+
+                        if (result?.Dados != null && result.Dados.Any())
+                        {
+                            lock (locker)
+                            {
+                                retorno.Dados.AddRange(result.Dados);
+                            }
+
+                            if (result.Dados.Count < tamanhoMaximoPagina)
+                                continuar = false;
+                        }
+                        else
+                        {
+                            continuar = false;
                         }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        hasMoreData = false;
+                        lock (locker)
+                        {
+                            logEntries.Add((
+                                localSkip / tamanhoMaximoPagina + 1,
+                                $"Requisição {localSkip / tamanhoMaximoPagina + 1} - Página: {localSkip / tamanhoMaximoPagina + 1} - Erro: {ex.Message}"
+                            ));
+                        }
+                        continuar = false;
                     }
-                }
-                catch
+
+                    taskStopwatch.Stop();
+                });
+
+                tasks.Add(task);
+
+                if (tasks.Count >= 80)
                 {
-                    hasMoreData = false;
+                    Task.WaitAll(tasks.ToArray());
+                    tasks.Clear();
+                }
+            }
+
+            Task.WaitAll(tasks.ToArray());
+
+            totalStopwatch.Stop();
+            logEntries.Add((logEntries.Count + 1, $"Processo concluído. Tempo total: {totalStopwatch.ElapsedMilliseconds / 1000.0:F2}s"));
+
+            var sortedLogs = logEntries.OrderBy(entry => entry.Item1).ToList();
+
+            using (StreamWriter logFile = new StreamWriter(logFilePath, true))
+            {
+                foreach (var log in sortedLogs)
+                {
+                    logFile.WriteLine(log.Item2);
                 }
             }
 
@@ -611,17 +628,6 @@ namespace DTSWindowsForm.UI.FattureWeb
                 var contentResponseFaturas = responseFaturas.Content.ReadAsStringAsync().Result;
                 return contentResponseFaturas;
             }
-        }
-
-        private void cmbBasesDisponiveis_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //if (cmbBasesDisponiveis.SelectedItem != null)
-            //{
-            //    string itemSelecionado = cmbBasesDisponiveis.SelectedItem.ToString();
-            //    settings.TipoConta = EnumExtensions.GetEnumByDescription<TipoContaEnum>(itemSelecionado);
-            //    cmbBasesDisponiveis.Items.Clear();
-            //    IniciaBackground();
-            //}
         }
 
         private void btnDownloadCsv_Click(object sender, EventArgs e)

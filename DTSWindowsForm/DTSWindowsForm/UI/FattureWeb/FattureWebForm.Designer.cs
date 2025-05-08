@@ -34,13 +34,13 @@
             panel3 = new Panel();
             gridFaturas = new DataGridView();
             panel4 = new Panel();
+            btnDownloadCsv = new Button();
+            btnFiltros = new Button();
             txtQtdFaturasFiltradas = new TextBox();
             label1 = new Label();
             txtQtdFaturas = new TextBox();
             lblFaturas = new Label();
             panel2 = new Panel();
-            btnFiltros = new Button();
-            btnDownloadCsv = new Button();
             btnBuscarFaturas = new Button();
             txtSenha = new TextBox();
             lblSenha = new Label();
@@ -153,6 +153,31 @@
             panel4.Size = new Size(643, 36);
             panel4.TabIndex = 2;
             // 
+            // btnDownloadCsv
+            // 
+            btnDownloadCsv.BackColor = Color.DarkOrange;
+            btnDownloadCsv.FlatStyle = FlatStyle.Popup;
+            btnDownloadCsv.Font = new Font("Segoe UI", 9F);
+            btnDownloadCsv.ForeColor = SystemColors.ControlText;
+            btnDownloadCsv.Location = new Point(276, 5);
+            btnDownloadCsv.Name = "btnDownloadCsv";
+            btnDownloadCsv.Size = new Size(95, 24);
+            btnDownloadCsv.TabIndex = 6;
+            btnDownloadCsv.Text = "🔼 Exportar";
+            btnDownloadCsv.UseVisualStyleBackColor = false;
+            btnDownloadCsv.Click += btnDownloadCsv_Click;
+            // 
+            // btnFiltros
+            // 
+            btnFiltros.Dock = DockStyle.Right;
+            btnFiltros.Location = new Point(568, 0);
+            btnFiltros.Name = "btnFiltros";
+            btnFiltros.Size = new Size(75, 36);
+            btnFiltros.TabIndex = 1;
+            btnFiltros.Text = "Filtros >>";
+            btnFiltros.UseVisualStyleBackColor = true;
+            btnFiltros.Click += btnFiltros_Click;
+            // 
             // txtQtdFaturasFiltradas
             // 
             txtQtdFaturasFiltradas.Enabled = false;
@@ -202,31 +227,6 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(643, 55);
             panel2.TabIndex = 0;
-            // 
-            // btnFiltros
-            // 
-            btnFiltros.Dock = DockStyle.Right;
-            btnFiltros.Location = new Point(568, 0);
-            btnFiltros.Name = "btnFiltros";
-            btnFiltros.Size = new Size(75, 36);
-            btnFiltros.TabIndex = 1;
-            btnFiltros.Text = "Filtros >>";
-            btnFiltros.UseVisualStyleBackColor = true;
-            btnFiltros.Click += btnFiltros_Click;
-            // 
-            // btnDownloadCsv
-            // 
-            btnDownloadCsv.BackColor = Color.DarkOrange;
-            btnDownloadCsv.FlatStyle = FlatStyle.Popup;
-            btnDownloadCsv.Font = new Font("Segoe UI", 9F);
-            btnDownloadCsv.ForeColor = SystemColors.ControlText;
-            btnDownloadCsv.Location = new Point(276, 5);
-            btnDownloadCsv.Name = "btnDownloadCsv";
-            btnDownloadCsv.Size = new Size(95, 24);
-            btnDownloadCsv.TabIndex = 6;
-            btnDownloadCsv.Text = "🔼 Exportar";
-            btnDownloadCsv.UseVisualStyleBackColor = false;
-            btnDownloadCsv.Click += btnDownloadCsv_Click;
             // 
             // btnBuscarFaturas
             // 
