@@ -330,6 +330,7 @@ namespace DTSWindowsForm.UI.FattureWeb
             fatura.DescricaoProdutos = contentFatura.Fatura.GetDescricaoProdutos();
             fatura.DescricoesOriginais = contentFatura.Fatura.GetDescricoesOriginaisProdutos();
             fatura.ProdutoConsumoKwh = contentFatura.Fatura.GetProdutoInteiro("Consumo kWh");
+            // adicionar novas colunas
             #region Obtenção dos produtos da fatura
             var produtoConsumoCompensadoKwh = contentFatura.Fatura.GetProdutoPorDescricao("Consumo Compensado kWh");
             var produtoConsumoKwh = contentFatura.Fatura.GetProdutoPorDescricao("Consumo kWh");
