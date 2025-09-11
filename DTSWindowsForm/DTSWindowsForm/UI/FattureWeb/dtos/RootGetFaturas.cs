@@ -302,6 +302,18 @@ public record Fatura(
             return 0;
         }
     }
+
+    internal string GetProdutoInteiro(string nomeProduto)
+    {
+        if (string.IsNullOrEmpty(nomeProduto) || Produtos == null)
+            return string.Empty;
+
+        var produto = Produtos.FirstOrDefault(x => x.Descricao == nomeProduto);
+        if (produto == null)
+            return string.Empty;
+
+        return JsonConvert.SerializeObject(produto, Formatting.Indented);
+    }
 }
 
 public record Fic(
