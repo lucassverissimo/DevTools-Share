@@ -22,9 +22,11 @@ namespace DTSWindowsForm.Services
         /// Locates the material to redo for a given project and position.
         /// Safely handles missing list or item to avoid NullReferenceException.
         /// </summary>
-        public void ListMateriaisRefazer(Projeto projeto, string posicao)
+        public void ListMateriaisRefazer(Projeto? projeto, string? posicao)
         {
+            if (projeto == null || string.IsNullOrEmpty(posicao)) return;
             if (refazerMateriais == null) return;
+
             var sucataRefazer = refazerMateriais
                 .FirstOrDefault(x => x.Projeto == projeto && x.Posicao == posicao);
             if (sucataRefazer == null) return;
