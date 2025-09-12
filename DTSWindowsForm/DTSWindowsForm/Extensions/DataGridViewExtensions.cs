@@ -1,4 +1,6 @@
 ﻿using ClosedXML.Excel;
+using System.Data;
+using System.Linq;
 
 namespace DTSWindowsForm.Extensions
 {
@@ -45,29 +47,27 @@ namespace DTSWindowsForm.Extensions
 
                 using (var workbook = new XLWorkbook())
                 {
-                    var worksheet = workbook.Worksheets.Add(prefixFileName);
-                    var headerStyle = worksheet.Range(1, 1, 1, grid.Columns.Count).Style;
-                    headerStyle.Font.Bold = true;
-                    headerStyle.Font.FontColor = XLColor.White;
-                    headerStyle.Fill.BackgroundColor = XLColor.BlueGray;
-
                     var orderedColumns = grid.Columns.Cast<DataGridViewColumn>()
                                              .OrderBy(c => c.DisplayIndex)
                                              .ToList();
 
-                    for (int col = 0; col < orderedColumns.Count; col++)
+                    var dataTable = new DataTable(prefixFileName);
+                    foreach (var column in orderedColumns)
                     {
-                        worksheet.Cell(1, col + 1).Value = orderedColumns[col].HeaderText;
+                        dataTable.Columns.Add(column.HeaderText);
                     }
 
-                    for (int row = 0; row < grid.Rows.Count; row++)
+                    foreach (DataGridViewRow row in grid.Rows)
                     {
-                        for (int col = 0; col < orderedColumns.Count; col++)
-                        {
-                            var columnIndex = orderedColumns[col].Index;
-                            worksheet.Cell(row + 2, col + 1).Value = grid.Rows[row].Cells[columnIndex].Value?.ToString() ?? string.Empty;
-                        }
+                        var values = orderedColumns.Select(c => row.Cells[c.Index].Value).ToArray();
+                        dataTable.Rows.Add(values);
                     }
+
+                    var worksheet = workbook.Worksheets.Add(dataTable, prefixFileName);
+                    var headerStyle = worksheet.Range(1, 1, 1, dataTable.Columns.Count).Style;
+                    headerStyle.Font.Bold = true;
+                    headerStyle.Font.FontColor = XLColor.White;
+                    headerStyle.Fill.BackgroundColor = XLColor.BlueGray;
 
                     worksheet.Columns().AdjustToContents();
                     worksheet.RangeUsed().SetAutoFilter();
