@@ -77,7 +77,7 @@ namespace DTSWindowsForm.UI.FattureWeb
                 if (e.RowIndex >= 0)
                 {
                     // Obtém o objeto vinculado à linha
-                    var item = (FaturasProdutoViewDto)gridFaturas.Rows[e.RowIndex].DataBoundItem;
+                    var item = (FaturasViewDto)gridFaturas.Rows[e.RowIndex].DataBoundItem;
                     if (item == null) return;
 
                     if (e.ColumnIndex == gridFaturas.Columns["VisualizarFatura"].Index)
@@ -101,7 +101,7 @@ namespace DTSWindowsForm.UI.FattureWeb
             };
         }
 
-        void BaixarPdf(FaturasProdutoViewDto fatura)
+        void BaixarPdf(FaturasViewDto fatura)
         {
             try
             {
@@ -169,7 +169,7 @@ namespace DTSWindowsForm.UI.FattureWeb
             }
         }
 
-        void BaixarJson(FaturasProdutoViewDto fatura)
+        void BaixarJson(FaturasViewDto fatura)
         {
             try
             {
@@ -238,7 +238,7 @@ namespace DTSWindowsForm.UI.FattureWeb
         private void dataGridView_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             string columnName = gridFaturas.Columns[e.ColumnIndex].DataPropertyName;
-            var dadosGrid = gridFaturas.DataSource as List<FaturasProdutoViewDto>;
+            var dadosGrid = gridFaturas.DataSource as List<FaturasViewDto>;
 
             var ordemColunas = gridFaturas.Columns.Cast<DataGridViewColumn>()
                 .OrderBy(c => c.DisplayIndex)
@@ -299,105 +299,140 @@ namespace DTSWindowsForm.UI.FattureWeb
 
         private void PreencherGridFaturas()
         {
-            List<FaturasProdutoViewDto> produtos = new List<FaturasProdutoViewDto>();
+            List<FaturasViewDto> faturas = new List<FaturasViewDto>();
             _dadosFiltrados = FiltrarDados();
-
             foreach (var dado in _dadosFiltrados)
             {
                 DateTime dataMesRef = DateTime.Parse(dado.Conteudo.Fatura.MesReferencia);
-                foreach (var produto in dado.Conteudo.Fatura.Produtos)
-                {
-                    if (_filtros.DescricaoProdutos != null && _filtros.DescricaoProdutos.Any())
-                    {
-                        if (!_filtros.DescricaoProdutos.Any(dp => !string.IsNullOrEmpty(produto.Descricao) && produto.Descricao.IndexOf(dp, StringComparison.OrdinalIgnoreCase) >= 0))
-                        {
-                            continue;
-                        }
-                    }
-
-                    if (_filtros.DescricoesOriginais != null && _filtros.DescricoesOriginais.Any())
-                    {
-                        if (!(produto.DescricoesOriginais != null && produto.DescricoesOriginais.Any(o => _filtros.DescricoesOriginais.Any(f => o.IndexOf(f, StringComparison.OrdinalIgnoreCase) >= 0))))
-                        {
-                            continue;
-                        }
-                    }
-
-                    var view = new FaturasProdutoViewDto
-                    {
-                        FaturaId = dado.Conteudo.FaturaId.ToString(),
-                        Instalacao = dado.Conteudo.UnidadeConsumidora.Instalacao,
-                        MesReferencia = dataMesRef.ToString("MMyyyy"),
-                        Distribuidora = dado.Conteudo.Distribuidora.ToString(),
-                        IdInstalacao = dado.InstalacaoId.ToString(),
-                        DataEmissao = dado.Conteudo.Fatura.DataEmissao,
-                        DataProcessamento = dado.DataProcessamento.ToString(),
-                        Descricao = produto.Descricao,
-                        Quantidade = produto.Quantidade,
-                        ValorTotal = produto.ValorTotal,
-                        ValorSemImpostos = produto.ValorSemImpostos,
-                        TarifaComImpostos = produto.TarifaComImpostos,
-                        TarifaSemImpostos = produto.TarifaSemImpostos,
-                        TaxaDesconto = produto.TaxaDesconto?.ToString(),
-                        DescricoesOriginais = produto.DescricoesOriginais != null ? string.Join(";", produto.DescricoesOriginais) : string.Empty
-                    };
-
-                    produtos.Add(view);
-                }
+                var consumoTotal = dado.Conteudo.Fatura.HistoricoFaturamento != null ? dado.Conteudo.Fatura.HistoricoFaturamento.FirstOrDefault().EnergiaAtiva : 0;
+                FaturasViewDto fatura = new FaturasViewDto();
+                fatura.FaturaId = dado.Conteudo.FaturaId.ToString();
+                fatura.Instalacao = dado.Conteudo.UnidadeConsumidora.Instalacao;
+                fatura.MesReferencia = dataMesRef.ToString("MMyyyy");
+                fatura.Distribuidora = dado.Conteudo.Distribuidora.ToString();
+                fatura.IdInstalacao = dado.InstalacaoId.ToString();
+                fatura.ConsumoTotal = consumoTotal.ToString();
+                fatura.DataEmissao = dado.Conteudo.Fatura.DataEmissao;
+                fatura.DataProcessamento = dado.DataProcessamento.ToString();
+                fatura.DataApresentacao = Convert.ToDateTime(dado.Conteudo?.Fatura?.DataApresentacao);
+                fatura.DataInsercaoFW = Convert.ToDateTime(dado.Conteudo?.DataInsercao);
+                fatura.DataProximaLeitura = Convert.ToDateTime(dado.Conteudo?.Fatura?.Leitura?.DataProxima);
+                ObtemDadosFatura(fatura, dado);
+                faturas.Add(fatura);
             }
 
-            gridFaturas.DataSource = produtos;
+            gridFaturas.DataSource = faturas;
         }
 
-        // ObtemDadosFatura removido: informações dos produtos agora são tratadas diretamente em PreencherGridFaturas.
+        private void ObtemDadosFatura(FaturasViewDto fatura, Dado dado)
+        {
+            var contentFatura = dado.Conteudo;
+            fatura.DescricaoProdutos = contentFatura.Fatura.GetDescricaoProdutos();
+            fatura.DescricoesOriginais = contentFatura.Fatura.GetDescricoesOriginaisProdutos();
+            fatura.ProdutoConsumoKwh = contentFatura.Fatura.GetProdutoInteiro("Consumo kWh");
+            #region Obtenção dos produtos da fatura
+            var produtoConsumoCompensadoKwh = contentFatura.Fatura.GetProdutoPorDescricao("Consumo Compensado kWh");
+            var produtoConsumoKwh = contentFatura.Fatura.GetProdutoPorDescricao("Consumo kWh");
+            var produtoEnergiaInjetadaKwh = contentFatura.Fatura.GetProdutoPorDescricao("Energia Injetada kWh");
+            var produtoEnergiaInjetadaTUSDKwh = contentFatura.Fatura.GetProdutoPorDescricao("Energia Injetada TUSD kWh");
+            var produtoEnergiaInjetadaTEKwh = contentFatura.Fatura.GetProdutoPorDescricao("Energia Injetada TE kWh");
+            var produtoConsumoTUSDKwh = contentFatura.Fatura.GetProdutoPorDescricao("Consumo TUSD kWh");
+            var produtoConsumoTEKwh = contentFatura.Fatura.GetProdutoPorDescricao("Consumo TE kWh");
+            var produtoContribuicaoIluminacaoPublica = contentFatura.Fatura.GetProdutoPorDescricao("Contribuição Iluminação Pública");
+            var produtoConsumoTEFP = contentFatura.Fatura.GetProdutoPorDescricao("Consumo TE kWh Fora Ponta");
+            var produtoConsumoTEP = contentFatura.Fatura.GetProdutoPorDescricao("Consumo TE kWh Ponta");
+            var produtoConsumoReativoExcedenteP = contentFatura.Fatura.GetProdutoPorDescricao("Consumo Reativo Excedente kVARh Ponta");
+            var produtoConsumoReativoExcedenteFP = contentFatura.Fatura.GetProdutoPorDescricao("Consumo Reativo Excedente kVARh Fora Ponta");
+            var produtoDemandaTUSDP = contentFatura.Fatura.GetProdutoPorDescricao("Demanda TUSD kW Ponta");
+            var produtoDemandaTUSDFP = contentFatura.Fatura.GetProdutoPorDescricao("Demanda TUSD kW Fora Ponta");
+            var produtoConsumoTUSDFP = contentFatura.Fatura.GetProdutoPorDescricao("Consumo TUSD kWh Fora Ponta");
+            var produtoConsumoTUSDP = contentFatura.Fatura.GetProdutoPorDescricao("Consumo TUSD kWh Ponta");
+            var produtoEnergiaInjetadaTEFP = contentFatura.Fatura.GetProdutoPorDescricao("Energia Injetada TE kWh Fora Ponta");
+            var produtoEnergiaInjetadaTUSDFP = contentFatura.Fatura.GetProdutoPorDescricao("Energia Injetada TUSD kWh Fora Ponta");
+            var produtoEnergiaInjetadaTEP = contentFatura.Fatura.GetProdutoPorDescricao("Energia Injetada TE kWh Ponta");
+            var produtoEnergiaInjetadaTUSDP = contentFatura.Fatura.GetProdutoPorDescricao("Energia Injetada TUSD kWh Ponta");
+            var produtoAdicionalBandeiraAmarela = contentFatura.Fatura.GetProdutoPorDescricao("Adic. Bandeira Amarela");
+            var produtoAdicionalBandeiraVermelhaP1 = contentFatura.Fatura.GetProdutoPorDescricao("Adic. Bandeira Vermelha P1");
+            var produtoAdicionalBandeiraVermelhaP2 = contentFatura.Fatura.GetProdutoPorDescricao("Adic. Bandeira Vermelha P2");
+            var produtoAdicionalBandeiraEscassezHidrica = contentFatura.Fatura.GetProdutoPorDescricao("Adic. Bandeira Escassez Hídrica");
+            var produtoBandeiraEnergiaInjetadaGDAmarela = contentFatura.Fatura.GetProdutoPorDescricao("Bandeira Energia Injetada GD Amarela");
+            var produtoBandeiraEnergiaInjetadaGDVermelhaP1 = contentFatura.Fatura.GetProdutoPorDescricao("Bandeira Energia Injetada GD Vermelha P1");
+            var produtoBandeiraEnergiaInjetadaGDVermelhaP2 = contentFatura.Fatura.GetProdutoPorDescricao("Bandeira Energia Injetada GD Vermelha P2");
+            var produtoBandeiraEnergiaInjetadaGDEscassesHidrica = contentFatura.Fatura.GetProdutoPorDescricao("Bandeira Energia Injetada GD Escassez Hídrica");
+            var produtoAjusteFaturamentoGD_REN_1059_2023 = contentFatura.Fatura.GetProdutoPorDescricao("Ajuste Faturamento GD - REN 1.059/2023");
+            #endregion
+
+            ModelosFaturasEnum modeloFatura = contentFatura.ObtemModeloFaturaGdc();
+            fatura.ModeloFatura = modeloFatura;
+            if (produtoEnergiaInjetadaKwh != null && modeloFatura != ModelosFaturasEnum.Modelo5)
+            {
+                var produto = produtoEnergiaInjetadaKwh;
+                fatura.EnergiaInjetada = produto.Quantidade != null ? Math.Abs(produto.Quantidade.Value) : 0;
+            }
+
+            if (produtoConsumoCompensadoKwh != null && modeloFatura == ModelosFaturasEnum.Modelo5)
+            {
+                var produto = produtoConsumoCompensadoKwh;
+                fatura.EnergiaInjetada = produto.Quantidade != null ? Math.Abs(produto.Quantidade.Value) : 0;
+            }
+            if (produtoEnergiaInjetadaTUSDKwh != null)
+            {
+                var produto = produtoEnergiaInjetadaTUSDKwh;
+                fatura.EnergiaInjetada = produto.Quantidade != null ? Math.Abs(produto.Quantidade.Value) : null;
+            }
+            if (contentFatura.Outros.DebitoAutomatico.HasValue)
+            {
+                fatura.DebitoAutomatico = contentFatura.Outros.DebitoAutomatico.Value ? "Sim" : "Não";
+            }
+
+            if (produtoEnergiaInjetadaTUSDKwh != null && produtoConsumoTUSDKwh != null && (produtoConsumoTUSDKwh.TarifaSemImpostos ?? 0) != 0)
+            {
+                fatura.EnquadramentoEnergiaPorcentagem = double.Abs(((produtoEnergiaInjetadaTUSDKwh.TarifaComImpostos ?? 0) / produtoConsumoTUSDKwh.TarifaSemImpostos.Value)) * 100;
+            }
+            fatura.ValorMuc = contentFatura.Fatura.GetValorMuc();
+        }
 
         private List<Dado> FiltrarDados()
         {
-            IEnumerable<Dado> query = _dados;
-
+            List<Dado> dadosFiltrados = _dados;
             if (!string.IsNullOrEmpty(_filtros.FaturaId))
             {
-                query = query.Where(x => x.Conteudo.FaturaId.ToString() == _filtros.FaturaId);
+                dadosFiltrados = dadosFiltrados.Where(x => x.Conteudo.FaturaId.ToString() == _filtros.FaturaId).ToList();
             }
 
             if (_filtros.Instalacao != null && _filtros.Instalacao.Any())
             {
-                query = query.Where(x => _filtros.Instalacao.Any(o => o == x.Conteudo.UnidadeConsumidora.Instalacao.ToString()));
+                dadosFiltrados = dadosFiltrados.Where(x => _filtros.Instalacao.Any(o => o == x.Conteudo.UnidadeConsumidora.Instalacao.ToString())).ToList();
             }
 
             if (_filtros.MesReferencia != null && _filtros.MesReferencia.Any())
             {
-                query = query.Where(x => _filtros.MesReferencia.Contains(DateTime.Parse(x.Conteudo.Fatura.MesReferencia).ToString("MMyyyy")));
+                dadosFiltrados = dadosFiltrados.Where(x => _filtros.MesReferencia.Contains(DateTime.Parse(x.Conteudo.Fatura.MesReferencia).ToString("MMyyyy"))).ToList();
             }
 
             if (_filtros.Distribuidora != null && _filtros.Distribuidora.Any())
             {
-                query = query.Where(x => _filtros.Distribuidora.Contains(x.Conteudo.Distribuidora.ToString()));
+                dadosFiltrados = dadosFiltrados.Where(x => _filtros.Distribuidora.Contains(x.Conteudo.Distribuidora.ToString())).ToList();
             }
 
             if (!string.IsNullOrEmpty(_filtros.IdInstalacao))
             {
-                query = query.Where(x => x.InstalacaoId.ToString() == _filtros.IdInstalacao);
+                dadosFiltrados = dadosFiltrados.Where(x => x.InstalacaoId.ToString() == _filtros.IdInstalacao).ToList();
             }
 
             if (!string.IsNullOrEmpty(_filtros.ConsumoTotal))
             {
-                query = query.Where(x => (x.Conteudo.Fatura.HistoricoFaturamento != null ? x.Conteudo.Fatura.HistoricoFaturamento.FirstOrDefault().EnergiaAtiva : 0).ToString() == _filtros.ConsumoTotal);
+                dadosFiltrados = dadosFiltrados.Where(x => (x.Conteudo.Fatura.HistoricoFaturamento != null ? x.Conteudo.Fatura.HistoricoFaturamento.FirstOrDefault().EnergiaAtiva : 0).ToString() == _filtros.ConsumoTotal).ToList();
             }
 
             if (_filtros.DataEmissao.HasValue)
             {
-                query = query.Where(x => DateTime.Parse(x.Conteudo.Fatura.DataEmissao) == _filtros.DataEmissao.Value);
-            }
-
-            if (_filtros.ModelosFw != null && _filtros.ModelosFw.Any())
-            {
-                query = query.Where(x => _filtros.ModelosFw.Any(m => m == x.Conteudo.ModeloFatura));
+                dadosFiltrados = dadosFiltrados.Where(x => DateTime.Parse(x.Conteudo.Fatura.DataEmissao) == _filtros.DataEmissao.Value).ToList();
             }
 
             if (chbFaturasDuplicadas.Checked)
             {
-                query = query
+                dadosFiltrados = dadosFiltrados
                     .GroupBy(x => new
                     {
                         x.Conteudo.Fatura.MesReferencia,
@@ -405,10 +440,30 @@ namespace DTSWindowsForm.UI.FattureWeb
                         x.Conteudo.Distribuidora
                     })
                     .Where(g => g.Count() > 1)
-                    .SelectMany(g => g);
+                    .SelectMany(g => g)
+                    .ToList();
             }
 
-            return query.ToList();
+            if (_filtros.DescricaoProdutos != null && _filtros.DescricaoProdutos.Any())
+            {
+                dadosFiltrados = dadosFiltrados.Where(x => _filtros.DescricaoProdutos.Exists(l => x.Conteudo.Fatura.GetDescricaoProdutos().ToLower().Contains(l.ToLower().Trim()))).ToList();
+            }
+
+            if (_filtros.DescricoesOriginais != null && _filtros.DescricoesOriginais.Any())
+            {
+                dadosFiltrados = dadosFiltrados.Where(x => _filtros.DescricoesOriginais.Exists(l =>
+                                                                                                x.Conteudo.Fatura
+                                                                                                .GetDescricoesOriginaisProdutos()
+                                                                                                .ToLower()
+                                                                                                .Contains(l.ToLower().Trim()))).ToList();
+            }
+
+            if (_filtros.ModelosFw != null && _filtros.ModelosFw.Any())
+            {
+                dadosFiltrados = dadosFiltrados.Where(x => _filtros.ModelosFw.Any(m => m == x.Conteudo.ModeloFatura)).ToList();
+            }
+
+            return dadosFiltrados;
         }
 
         public void CarregarDados()
